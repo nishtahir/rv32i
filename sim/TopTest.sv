@@ -1,0 +1,37 @@
+module TopTest;
+
+    logic rst = 0;
+    logic clk = 0;
+    always #1 clk = !clk;
+
+    logic [31:0] writedata;
+    logic [31:0] dataaddr;
+    logic [31:0] pc;
+    logic [31:0] instr;
+    logic memwrite;
+    
+    Top uut(
+        .clk(clk),
+        .rst(rst),
+        .writedata(writedata),
+        .dataaddr(dataaddr),
+        .memwrite(memwrite),
+        .pc(pc),
+        .instr(instr)
+    );
+
+    initial begin
+        $dumpfile("../build/TopTest.vcd");
+        $dumpvars(0, TopTest);
+
+        #9
+        rst = 1;
+
+        #2
+        rst = 0;
+
+        #20 
+        $finish;
+    end
+
+endmodule
