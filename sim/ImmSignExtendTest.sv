@@ -27,6 +27,10 @@ module ImmSignExtendTest();
         instr = 32'h0064A423;
         imm_sel = 1;
 
+        #2
+        instr = 32'hFE420AE3;
+        imm_sel = 2;
+
         #20 $finish;
     end
 endmodule

@@ -1,7 +1,6 @@
 module Top (
     input logic clk,
     input logic rst,
-    output logic memwrite,
     output logic [31: 0] writedata,
     output logic [31: 0] dataaddr,
     // Debug signals
@@ -10,20 +9,30 @@ module Top (
     output logic [31: 0] rd1,
     output logic [31: 0] rd2
 );
-
-    logic [31: 0] pcplus4; 
-    logic [31: 0] readdata;
-    logic [31: 0] immext;
-
-    logic [3: 0] alu_control;
-    logic [31: 0] alu_out;
+    // Control signals
+    logic alu_src;
+    logic alu_zero;
+    logic result_src;
+    logic pc_src;
+    logic memwrite;
+    logic memread;
+    logic regwrite;
+    logic [3:0] alu_control;
+    logic [3:0] imm_sel;
+    
+    // Data signals
+    logic [31:0] pc_target;
+    logic [31:0] pc_plus_4; 
+    logic [31:0] readdata;
+    logic [31:0] immext;
+    logic [31:0] alu_out;
 
     ProgramCounter counter(
         .clk(clk),
         .rst(rst),
-        .next(pcplus4),
+        .next(pc_src ? pc_target : pc_plus_4),
         .pc(pc),
-        .pcplus4(pcplus4)
+        .pcplus4(pc_plus_4)
     );
 
     Rom #(
@@ -43,49 +52,53 @@ module Top (
         .MEM_DEPTH(256)
     ) datamem (
         .clk(clk),
-        .wen(0),
-        .ren(1),
-        .waddr(0),
+        .wen(memwrite),
+        .ren(memread),
+        .waddr(alu_out),
         .raddr(alu_out),
-        .wdata(0),
-        .rdata(writedata)
+        .wdata(rd2),
+        .rdata(readdata)
     );
 
-    RegisterFile regwrite(
+    RegisterFile regfile(
         .clk(clk),
-        .we(1),
+        .we(regwrite),
         .raddr1(instr[19: 15]), // rs1
         .raddr2(instr[24: 20]), // rs2
         .waddr(instr[11: 7]),   // rd
-        .wdata(writedata),  
+        .wdata(result_src? readdata: alu_out),  
         .rd1(rd1),
         .rd2(rd2)
     );
 
     ImmSignExtend extend (
         .instr(instr),
-        .imm_sel(1),
+        .imm_sel(imm_sel),
         .out(immext)
     );
 
     Alu alu(
         .a(rd1),
-        .b(immext),
-        .control(0),
+        .b(alu_src ? immext: rd2),
+        .control(alu_control),
+        .zero(alu_zero),
         .out(alu_out)
     );
 
-// Core riscv(
-//     .clk(clk),
-//     .rst(rst),
-//     .instr(instr),
-//     .memwrite(memwrite),
-//     .pc(pc),
-//     .aluresult(dataaddr),
-//     .readdata(readdata),
-//     .writedata(writedata)
-// );
+    Controller controller(
+        .opcode(instr[6:0]),
+        .funct3(instr[14:12]),
+        .funct7(instr[31: 25]),
+        .alu_zero(alu_zero),
+        .alu_src(alu_src),
+        .result_src(result_src),
+        .pc_src(pc_src),
+        .memwrite(memwrite),
+        .memread(memread),
+        .regwrite(regwrite),
+        .alu_control(alu_control),
+        .imm_sel(imm_sel)
+    );
 
+    assign pc_target = pc + immext;
 endmodule
-
-

@@ -5,9 +5,9 @@ module RegisterFileTest;
     always #1 clk = !clk;
 
     logic we = 0;
-    logic [5: 0] raddr1;
-    logic [5: 0] raddr2;
-    logic [5: 0] waddr;
+    logic [4: 0] raddr1;
+    logic [4: 0] raddr2;
+    logic [4: 0] waddr;
     logic [31: 0] wdata;
     logic [31: 0] rd1;
     logic [31: 0] rd2;

@@ -1,9 +1,9 @@
 module RegisterFile (
     input logic clk,
     input logic we,
-    input logic [5: 0] raddr1,
-    input logic [5: 0] raddr2,
-    input logic [5: 0] waddr,
+    input logic [4: 0] raddr1,
+    input logic [4: 0] raddr2,
+    input logic [4: 0] waddr,
     input logic [31: 0] wdata,
     output logic [31: 0] rd1,
     output logic [31: 0] rd2
@@ -20,6 +20,7 @@ end
 
 
 always_ff @(posedge clk) begin
+    // TODO hardwire mem[0] to 0
     if(we) begin
         mem[waddr] <= wdata;
     end

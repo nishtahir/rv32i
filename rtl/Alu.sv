@@ -9,28 +9,16 @@ module Alu (
     output logic [31: 0] out
 );
 
-    localparam ADD = 0;
-    localparam SUB = 1;
-    localparam AND = 2;
-    localparam OR  = 3;
-
-    // localparam XOR = 4'h4;
-
-    // // Shift left logical
-    // localparam SLL = 4'h5;
-    // // Shift right logical
-    // localparam SRL = 4'h7;
-    // // Set less than
-    // localparam SLT = 4'h8;
-    // // Shift right arithmetic
-    // localparam SRA = 4'h6;
-
-    // // Not sure why we have nor 
-    // localparam NOR = 4'h9;
+    localparam ADD = 4'b0000;
+    localparam SUB = 4'b0001;
+    localparam AND = 4'b0010;
+    localparam OR  = 4'b0011;
+    localparam SLT = 4'b0100;
 
     always_comb begin
         carry = 0;
         overflow = 0;
+        
         case (control)
             ADD: begin
                 {carry, out} = {1'b0, a} + {1'b0, b};
@@ -46,10 +34,10 @@ module Alu (
             end
             AND: out = a & b;
             OR : out = a | b;
+            SLT: out = ($signed(a) < $signed(b)) ? 1 : 0;
             // SLL: 
             // XOR: out = a ^ b;
             // SUB: out = a - b;
-            // SLT: 
             // SRL: 
             // SRA: 
             // NOR: 

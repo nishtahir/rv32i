@@ -15,7 +15,6 @@ module TopTest;
         .rst(rst),
         .writedata(writedata),
         .dataaddr(dataaddr),
-        .memwrite(memwrite),
         .pc(pc),
         .instr(instr)
     );
@@ -24,13 +23,8 @@ module TopTest;
         $dumpfile("../build/TopTest.vcd");
         $dumpvars(0, TopTest);
 
-        #9
-        rst = 1;
 
-        #2
-        rst = 0;
-
-        #20 
+        #10 
         $finish;
     end
 

@@ -22,11 +22,13 @@ module AluTest;
         $dumpfile("../build/AluTest.vcd");
         $dumpvars(0, AluTest);
 
+        // Check Add
         #2
         a = 10;
         b = 20;
         control = 0;
 
+        // Check Sub
         #2
         a = 45;
         b = 25;
@@ -54,6 +56,22 @@ module AluTest;
         a = 32'h7FFFFFFF;
         b = 32'h00000001;
         control = 0;
+
+        // Check SLT
+        #2
+        a = 32'h000000FF;
+        b = 32'h00000F00;
+        control = 4;
+
+        #2
+        a = 32'h000000FF;
+        b = 32'h00000F00;
+        control = 4;
+
+               #2
+        a = 32'h100000FF;
+        b = 32'h00000F00;
+        control = 4;
 
         #20 
         $finish;
