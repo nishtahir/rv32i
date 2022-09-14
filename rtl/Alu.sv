@@ -17,6 +17,7 @@ module Alu (
     localparam XOR  = 4'b0101;
     localparam SLTU = 4'b0110;
     localparam SLL  = 4'b0111;
+    localparam SRL  = 4'b1000;
 
     always_comb begin
         carry = 0;
@@ -41,6 +42,7 @@ module Alu (
             XOR : out = a ^ b;
             SLTU: out = a < b ? 1 : 0;
             SLL : out = a << b[4: 0];
+            SRL : out = a >> b[4: 0];
             default: out = 0;
         endcase
     end
