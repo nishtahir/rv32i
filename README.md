@@ -62,8 +62,8 @@ make
 - [x] add 
 - [x] sub 
 - [x] sll 
-- [ ] slt 
-- [ ] sltu 
+- [x] slt 
+- [x] sltu 
 - [x] xor 
 - [ ] srl 
 - [ ] sra 

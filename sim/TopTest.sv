@@ -98,6 +98,22 @@ module TopTest;
         _assert(reg_waddr === 5'h0C, "sll x12, x11, x10");
         _assert(reg_wdata === 32'h00001FF8, "sll x12, x11, x10");
 
+        #2
+        _assert(reg_waddr === 5'h0D, "slt x13, x12, x11");
+        _assert(reg_wdata === 32'h00000000, "slt x13, x12, x11");
+
+        #2
+        _assert(reg_waddr === 5'h0D, "slt x13, x11, x12");
+        _assert(reg_wdata === 32'h00000001, "slt x13, x11, x12");
+
+        #2
+        _assert(reg_waddr === 5'h0D, "sltu x13, x12, x11");
+        _assert(reg_wdata === 32'h00000000, "slt x13, x12, x11");
+
+        #2
+        _assert(reg_waddr === 5'h0D, "sltu x13, x11, x12");
+        _assert(reg_wdata === 32'h00000001, "slt x13, x11, x12");
+
         #10 
         $finish;
     end
