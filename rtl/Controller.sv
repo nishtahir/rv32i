@@ -16,14 +16,6 @@ module Controller (
     logic [11: 0] alu_instr;
     logic branch;
 
-    // assign pc_src = 0;
-    // assign result_src = 0;
-    // assign alu_src = 1;
-    // assign memwrite = 1;
-    // assign memread = 1;
-    // assign alu_control = 0;
-    // assign regwrite = 1;
-
     // We always want this enabled
     assign memread = 1;
     
@@ -45,7 +37,7 @@ module Controller (
             7'b0000011: begin // I-type load
                 regwrite = 1;
                 alu_src = 1;
-                memwrite = 1;
+                result_src = 1;
             end
             7'b0100011: begin // S-type store 
                 imm_sel = 1;
@@ -62,7 +54,10 @@ module Controller (
                 branch = 1;
             end
             7'b0010011: begin // I-type arithmetic immediate
-                
+                regwrite = 1;
+                imm_sel = 0;
+                alu_src = 1;
+                alu_op = 2;
             end
             default: begin
                 // no-op
@@ -81,9 +76,9 @@ module Controller (
             12'b01_???_???????: alu_control = 1; // sub
             12'b??_000_0100000: alu_control = 1; // sub
             12'b??_000_0000000: alu_control = 0; // add
-            12'b??_010_???????: alu_control = 4;
-            12'b??_110_???????: alu_control = 3;
-            12'b??_111_???????: alu_control = 2;
+            12'b??_010_???????: alu_control = 4; // slti
+            12'b??_110_???????: alu_control = 3; // or
+            12'b??_111_???????: alu_control = 2; // and
             default: alu_control = 0;
         endcase
     end

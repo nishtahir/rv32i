@@ -25,20 +25,14 @@ module Ram #(
     end
 
     // Interact with the memory block
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
         if (wen) begin
-            mem[waddr] <= wdata;
+            mem[waddr] = wdata;
         end
         
-        // Read from memory
         if (ren) begin
-            rdata <= mem[raddr];
+            rdata = mem[raddr];
         end
     end
-
-    // Initialization (if available)
-    // initial if (INIT_FILE) begin
-    //     $readmemh(INIT_FILE, mem);
-    // end
 
 endmodule

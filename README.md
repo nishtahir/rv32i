@@ -1,5 +1,5 @@
-# open-ice40-template
-A template repository to quickly create projects targetting open FPGA platforms
+# RV32I
+An RV32I core implementation
 
 # Directories
 
@@ -44,4 +44,74 @@ You can add and remove your own board configurations in the `board` folder by ad
 
 ```
 make 
+```
+
+# Supported Instructions
+
+- [ ] lui 
+- [ ] auipc 
+- [x] addi 
+- [x] slti 
+- [ ] sltiu 
+- [ ] xori 
+- [x] ori 
+- [x] andi 
+- [ ] slli 
+- [ ] srli 
+- [ ] srai 
+- [x] add 
+- [x] sub 
+- [ ] sll 
+- [ ] slt 
+- [ ] sltu 
+- [ ] xor 
+- [ ] srl 
+- [ ] sra 
+- [x] or 
+- [ ] and 
+- [ ] fence 
+- [ ] csrrw 
+- [ ] csrrs 
+- [ ] csrrc 
+- [ ] csrrwi 
+- [ ] csrrsi 
+- [ ] csrrci 
+- [ ] ecall 
+- [ ] ebreak 
+- [ ] uret 
+- [ ] sret 
+- [ ] mret 
+- [ ] wfi 
+- [ ] lb 
+- [ ] lh 
+- [x] lw 
+- [ ] lbu 
+- [ ] lhu 
+- [ ] sb 
+- [ ] sh 
+- [x] sw 
+- [ ] jal 
+- [ ] jalr 
+- [ ] beq 
+- [ ] bne 
+- [ ] blt 
+- [ ] bge 
+- [ ] bltu 
+- [ ] bgeu 
+
+# License
+```
+Copyright 2022 Nish Tahir
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```

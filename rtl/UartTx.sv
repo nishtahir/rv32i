@@ -27,8 +27,7 @@ module UartTx #(
   State next_state;
 
   always @(posedge clk) begin
-
-    if(!rst) begin
+    if(rst) begin
       state <= IDLE;
       bit_counter <= 0;
       baud_counter <= 0;

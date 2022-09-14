@@ -34,7 +34,7 @@ module UartRx #(
   logic inc_bit;
 
   always @(posedge clk) begin
-    if(!rst) begin
+    if(rst) begin
       state <= IDLE;
       sample_counter <= 0;
       bit_counter <= 0;

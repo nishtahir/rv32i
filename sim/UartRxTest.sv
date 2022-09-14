@@ -1,10 +1,10 @@
 module UartRxTest;
-  reg rst = 1;
-  reg clk = 0;
+  logic rst = 1;
+  logic clk = 0;
   always #1 clk = !clk;
 
-  reg uart_rx = 1;
-  reg [7:0] data;
+  logic uart_rx = 1;
+  logic [7:0] data;
 
   UartRx  #(
     .CLK_FREQUENCY_HZ(100), 
@@ -20,9 +20,9 @@ module UartRxTest;
     $dumpfile("../build/UartRxTest.vcd");
     $dumpvars(0, UartRxTest);
 
-    #1 uart_rx = 0;
-    #20 uart_rx = 1;
+    #2 uart_rx = 0;
+    #2 uart_rx = 1;
 
-    #300 $finish;
+    #2 $finish;
   end
 endmodule

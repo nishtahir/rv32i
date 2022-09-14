@@ -1,16 +1,18 @@
 module UartTxTest;
-  /* Make a reset that pulses once. */
-  reg clk = 0;
+  logic clk = 0;
   always #1 clk = !clk;
 
-  reg reset = 0;
-  reg send = 0;
-  reg [7:0] data = 8'b10101010;
+  logic reset = 0;
+  logic send = 0;
+  logic [7:0] data = 8'b10101010;
 
-  wire ready;
-  wire uart_tx;
+  logic ready;
+  logic uart_tx;
 
-  UartTx uut (
+  UartTx #(
+    .CLK_FREQUENCY_HZ(100), 
+    .BAUD(10)
+  ) uut (
     .clk(clk),
     .rst(reset),
     .send(send),
@@ -21,15 +23,15 @@ module UartTxTest;
   initial begin
     $dumpfile("../build/UartTxTest.vcd");
     $dumpvars(0, UartTxTest);
-    #5 reset = 1;
-    #10 reset = 0;
-    #10 send = 1;
-    #15 send = 0;
-    #20 assert(reset == 0);
-    //   # 100 $stop;
-    #300 $finish;
+
+    #2 reset = 1;
+    #2 reset = 0;
+
+    #2 send = 1;
+    #2 send = 0;
+
+    #2 assert(reset == 0);
+    #100 $finish;
   end
 
-  // initial
-    // $monitor("At time %t, value = %h (%0d)", $time, value, value);
 endmodule

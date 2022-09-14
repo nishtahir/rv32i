@@ -41,7 +41,7 @@ module ControllerTest;
         opcode = 7'b0110011; 
         funct3 = 3'b000;
         funct7 = 7'b0000000;
-
+        
         #2 // LW
         opcode = 7'b0000011; 
         funct3 = 3'b010;

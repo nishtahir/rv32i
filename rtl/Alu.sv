@@ -35,12 +35,6 @@ module Alu (
             AND: out = a & b;
             OR : out = a | b;
             SLT: out = ($signed(a) < $signed(b)) ? 1 : 0;
-            // SLL: 
-            // XOR: out = a ^ b;
-            // SUB: out = a - b;
-            // SRL: 
-            // SRA: 
-            // NOR: 
             default: out = 0;
         endcase
     end
