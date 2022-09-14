@@ -14,6 +14,7 @@ module Alu (
     localparam AND = 4'b0010;
     localparam OR  = 4'b0011;
     localparam SLT = 4'b0100;
+    localparam XOR = 4'b0101;
 
     always_comb begin
         carry = 0;
@@ -35,6 +36,7 @@ module Alu (
             AND: out = a & b;
             OR : out = a | b;
             SLT: out = ($signed(a) < $signed(b)) ? 1 : 0;
+            XOR: out = a ^ b;
             default: out = 0;
         endcase
     end

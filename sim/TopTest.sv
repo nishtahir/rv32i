@@ -74,6 +74,14 @@ module TopTest;
         _assert(reg_waddr === 5'h07, "lw x7, 8(x0)");
         _assert(reg_wdata === 32'h000003FE, "lw x7, 8(x0)");
 
+        #2
+        _assert(reg_waddr === 5'h08, "xori x8, x7, 33");
+        _assert(reg_wdata === 32'h000003DF, "xori x8, x7, 33");
+
+        #2
+        _assert(reg_waddr === 5'h09, "xor x9, x5, x7");
+        _assert(reg_wdata === 32'h000003FF, "xor x9, x5, x7");
+
         #10 
         $finish;
     end

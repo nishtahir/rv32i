@@ -53,7 +53,7 @@ make
 - [x] addi 
 - [x] slti 
 - [ ] sltiu 
-- [ ] xori 
+- [x] xori 
 - [x] ori 
 - [x] andi 
 - [ ] slli 
@@ -64,7 +64,7 @@ make
 - [ ] sll 
 - [ ] slt 
 - [ ] sltu 
-- [ ] xor 
+- [x] xor 
 - [ ] srl 
 - [ ] sra 
 - [x] or 
