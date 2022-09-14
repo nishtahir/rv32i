@@ -9,12 +9,14 @@ module Alu (
     output logic [31: 0] out
 );
 
-    localparam ADD = 4'b0000;
-    localparam SUB = 4'b0001;
-    localparam AND = 4'b0010;
-    localparam OR  = 4'b0011;
-    localparam SLT = 4'b0100;
-    localparam XOR = 4'b0101;
+    localparam ADD  = 4'b0000;
+    localparam SUB  = 4'b0001;
+    localparam AND  = 4'b0010;
+    localparam OR   = 4'b0011;
+    localparam SLT  = 4'b0100;
+    localparam XOR  = 4'b0101;
+    localparam SLTU = 4'b0110;
+    localparam SLL  = 4'b0111;
 
     always_comb begin
         carry = 0;
@@ -33,10 +35,12 @@ module Alu (
                 // Signed bit of a and b are different
                 overflow = (a[31] == ~out[31]) & (a[31] == ~b[31]);
             end
-            AND: out = a & b;
-            OR : out = a | b;
-            SLT: out = ($signed(a) < $signed(b)) ? 1 : 0;
-            XOR: out = a ^ b;
+            AND : out = a & b;
+            OR  : out = a | b;
+            SLT : out = ($signed(a) < $signed(b)) ? 1 : 0;
+            XOR : out = a ^ b;
+            SLTU: out = a < b ? 1 : 0;
+            SLL : out = a << b[4: 0];
             default: out = 0;
         endcase
     end

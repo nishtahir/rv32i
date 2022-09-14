@@ -82,6 +82,22 @@ module TopTest;
         _assert(reg_waddr === 5'h09, "xor x9, x5, x7");
         _assert(reg_wdata === 32'h000003FF, "xor x9, x5, x7");
 
+        #2
+        _assert(reg_waddr === 5'h0A, "sltiu x10, x9, 1022");
+        _assert(reg_wdata === 32'h00000000, "sltiu x10, x9, 1022");
+
+        #2
+        _assert(reg_waddr === 5'h0A, "sltiu x10, x8, 1022");
+        _assert(reg_wdata === 32'h00000001, "sltiu x10, x8, 1022");
+
+        #2
+        _assert(reg_waddr === 5'h0B, "slli x11,x9, 2");
+        _assert(reg_wdata === 32'h00000FFC, "slli x11,x9, 2");
+
+        #2
+        _assert(reg_waddr === 5'h0C, "sll x12, x11, x10");
+        _assert(reg_wdata === 32'h00001FF8, "sll x12, x11, x10");
+
         #10 
         $finish;
     end

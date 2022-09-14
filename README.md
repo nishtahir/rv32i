@@ -52,16 +52,16 @@ make
 - [ ] auipc 
 - [x] addi 
 - [x] slti 
-- [ ] sltiu 
+- [x] sltiu 
 - [x] xori 
 - [x] ori 
 - [x] andi 
-- [ ] slli 
+- [x] slli 
 - [ ] srli 
 - [ ] srai 
 - [x] add 
 - [x] sub 
-- [ ] sll 
+- [x] sll 
 - [ ] slt 
 - [ ] sltu 
 - [x] xor 
