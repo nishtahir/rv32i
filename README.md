@@ -58,7 +58,7 @@ make
 - [x] andi 
 - [x] slli 
 - [x] srli 
-- [ ] srai 
+- [x] srai 
 - [x] add 
 - [x] sub 
 - [x] sll 
@@ -66,7 +66,7 @@ make
 - [x] sltu 
 - [x] xor 
 - [x] srl 
-- [ ] sra 
+- [x] sra 
 - [x] or 
 - [x] and 
 - [ ] fence 
