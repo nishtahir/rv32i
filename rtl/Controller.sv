@@ -59,9 +59,6 @@ module Controller (
                 alu_src = 1;
                 alu_op = 2;
             end
-            default: begin
-                // no-op
-            end
         endcase
         pc_src = (alu_zero & branch);
 

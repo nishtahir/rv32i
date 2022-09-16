@@ -82,11 +82,11 @@ make
 - [ ] sret 
 - [ ] mret 
 - [ ] wfi 
-- [ ] lb 
-- [ ] lh 
+- [x] lb 
+- [x] lh 
 - [x] lw 
-- [ ] lbu 
-- [ ] lhu 
+- [x] lbu 
+- [x] lhu 
 - [ ] sb 
 - [ ] sh 
 - [x] sw 

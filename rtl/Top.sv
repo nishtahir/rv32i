@@ -26,14 +26,17 @@ module Top (
     logic [31:0] pc_target;
     logic [31:0] pc_plus_4; 
     logic [31:0] readdata;
+    logic [31:0] readdata_ext;
     logic [31:0] immext;
     logic [31:0] alu_out;
+    logic [2:0] funct3;
 
     assign pc_target = pc + immext;
     assign reg_raddr1 = instr[19:15];
     assign reg_raddr2 = instr[24:20];
-    assign reg_wdata = result_src ? readdata: alu_out;
+    assign reg_wdata = result_src ? readdata_ext: alu_out;
     assign reg_waddr = instr[11:7];
+    assign funct3 = instr[14:12];
 
     ProgramCounter counter(
         .clk(clk),
@@ -95,7 +98,7 @@ module Top (
 
     Controller controller(
         .opcode(instr[6:0]),
-        .funct3(instr[14:12]),
+        .funct3(funct3),
         .funct7(instr[31:25]),
         .alu_zero(alu_zero),
         .alu_src(alu_src),
@@ -106,6 +109,12 @@ module Top (
         .regwrite(reg_write),
         .alu_control(alu_control),
         .imm_sel(imm_sel)
+    );
+
+    ResultExtender result_ext(
+        .in(readdata),
+        .out(readdata_ext),
+        .funct3(funct3)
     );
 
 endmodule

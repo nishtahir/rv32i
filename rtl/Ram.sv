@@ -25,11 +25,24 @@ module Ram #(
     end
 
     // Interact with the memory block
-    always_ff @(posedge clk) begin
+    always @(posedge clk) begin
         if (wen) begin
             mem[waddr] = wdata;
         end
         
+        if (ren) begin
+            rdata = mem[raddr];
+        end
+    end
+
+    // Interact with the memory block
+    always @(posedge clk) begin
+        if (wen) begin
+            mem[waddr] = wdata;
+        end
+    end
+
+    always_comb begin
         if (ren) begin
             rdata = mem[raddr];
         end
