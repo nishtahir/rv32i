@@ -87,8 +87,8 @@ make
 - [x] lw 
 - [x] lbu 
 - [x] lhu 
-- [ ] sb 
-- [ ] sh 
+- [x] sb 
+- [x] sh 
 - [x] sw 
 - [ ] jal 
 - [ ] jalr 

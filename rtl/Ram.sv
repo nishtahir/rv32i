@@ -1,8 +1,6 @@
 module Ram #(
     parameter MEM_WIDTH = 32,
     parameter MEM_DEPTH = 256
-    // ,
-    // parameter INIT_FILE = ""
 ) (
     input logic clk,
     input logic wen,
@@ -29,22 +27,14 @@ module Ram #(
         if (wen) begin
             mem[waddr] = wdata;
         end
-        
-        if (ren) begin
-            rdata = mem[raddr];
-        end
-    end
-
-    // Interact with the memory block
-    always @(posedge clk) begin
-        if (wen) begin
-            mem[waddr] = wdata;
-        end
     end
 
     always_comb begin
         if (ren) begin
             rdata = mem[raddr];
+        end 
+        else begin
+            rdata = 0;
         end
     end
 

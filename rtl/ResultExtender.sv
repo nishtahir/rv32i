@@ -4,23 +4,23 @@ module ResultExtender (
     output logic [31:0] out
 );
 
-    logic [31:0] lb;
-    logic [31:0] lh;
+    logic [31:0] b;
+    logic [31:0] h;
 
-    SignExtend #(.WIDTH(8)) lb_ext(
+    SignExtend #(.WIDTH(8)) b_ext(
         .in(in[7:0]),
-        .out(lb)
+        .out(b)
     );
 
-    SignExtend #(.WIDTH(16)) lh_ext(
+    SignExtend #(.WIDTH(16)) h_ext(
         .in(in[15:0]),
-        .out(lh)
+        .out(h)
     );
 
     always_comb begin
         case (funct3)
-            3'b000: out = lb;
-            3'b001: out = lh;
+            3'b000: out = b;
+            3'b001: out = h;
             // Zero extend
             3'b100: out = {{24{1'b0}}, in[7:0]}; // lbu
             3'b101: out = {{16{1'b0}}, in[15:0]}; // lhu

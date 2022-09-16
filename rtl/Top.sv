@@ -27,6 +27,7 @@ module Top (
     logic [31:0] pc_plus_4; 
     logic [31:0] readdata;
     logic [31:0] readdata_ext;
+    logic [31:0] wdata_ext;
     logic [31:0] immext;
     logic [31:0] alu_out;
     logic [2:0] funct3;
@@ -67,7 +68,7 @@ module Top (
         .ren(memread),
         .waddr(alu_out[7:0]),
         .raddr(alu_out[7:0]),
-        .wdata(rd2),
+        .wdata(wdata_ext),
         .rdata(readdata)
     );
 
@@ -114,6 +115,12 @@ module Top (
     ResultExtender result_ext(
         .in(readdata),
         .out(readdata_ext),
+        .funct3(funct3)
+    );
+
+    RegisterTruncater rd_trunc(
+        .in(rd2),
+        .out(wdata_ext),
         .funct3(funct3)
     );
 
