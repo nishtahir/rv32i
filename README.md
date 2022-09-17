@@ -90,7 +90,7 @@ make
 - [x] sb 
 - [x] sh 
 - [x] sw 
-- [ ] jal 
+- [x] jal 
 - [ ] jalr 
 - [ ] beq 
 - [ ] bne 

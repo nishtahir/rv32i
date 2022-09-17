@@ -22,7 +22,7 @@ end
 always_ff @(posedge clk) begin
     // TODO hardwire mem[0] to 0
     if(we) begin
-        mem[waddr] <= wdata;
+        mem[waddr] = wdata;
     end
 end
 

@@ -4,22 +4,22 @@ module Controller (
     input logic [6:0] funct7,
     input logic alu_zero,
     output logic alu_src,
-    output logic result_src,
     output logic pc_src,
     output logic memwrite,
     output logic memread,
     output logic regwrite,
     output logic [3:0] alu_control,
-    output logic [1:0] imm_sel
+    output logic [1:0] imm_sel,
+    output logic [1:0] result_src
 );
     logic [1:0] alu_op;
     logic [11: 0] alu_instr;
     logic branch;
+    logic jump;
 
     // We always want this enabled
     assign memread = 1;
     
-    // Main 
     always_comb begin
         alu_src = 0;
         imm_sel = 0;
@@ -29,6 +29,7 @@ module Controller (
         memwrite = 0;
         alu_op = 0;
         branch = 0;
+        jump = 0;
 
         // https://cepdnaclk.github.io/e16-co502-RV32IM-pipeline-implementation-group3/RV32IM%20-%20Sheet1.pdf
         // I couldn't find a reference that names the opcodes specifially so rather than invent my own naming
@@ -48,7 +49,7 @@ module Controller (
                 regwrite = 1;
                 alu_op = 2;
             end
-            7'b1100011: begin // B-type branch 1100011
+            7'b1100011: begin // B-type branch
                 imm_sel = 2;
                 alu_op = 1;
                 branch = 1;
@@ -59,14 +60,20 @@ module Controller (
                 alu_src = 1;
                 alu_op = 2;
             end
+            7'b1101111: begin // J-type Jump
+                branch = 0;
+                regwrite = 1;
+                imm_sel = 3;
+                result_src = 2;
+            end
         endcase
-        pc_src = (alu_zero & branch);
+        pc_src = (alu_zero & branch) | jump;
 
         // Concat signals to derive ALU control signal
         alu_instr = {alu_op, funct3, funct7};
     end
 
-    // alu
+    // Generate ALU control signal
     always_comb begin
         casez (alu_instr)
             12'b00_???_???????: alu_control = 0; // add

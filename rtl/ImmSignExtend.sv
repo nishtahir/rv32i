@@ -7,6 +7,7 @@ module ImmSignExtend (
     logic [31:0] imm_i;
     logic [31:0] imm_s;
     logic [31:0] imm_b;
+    logic [31:0] imm_j;
 
     SignExtend #(.WIDTH(12)) i_type(
         .in(instr[31:20]),
@@ -32,11 +33,17 @@ module ImmSignExtend (
         .out(imm_b)
     );
 
+    SignExtend #(.WIDTH(21)) j_type(
+        .in({instr[31], instr[19:12], instr[20], instr[30:21], 1'b0}),
+        .out(imm_j)
+    );
+
     always_comb begin
         case (imm_sel)
-            0: out = imm_i; 
-            1: out = imm_s;
-            2: out = imm_b;
+            2'b00: out = imm_i; 
+            2'b01: out = imm_s;
+            2'b10: out = imm_b;
+            2'b11: out = imm_j;
             default: out = imm_i;
         endcase
     end

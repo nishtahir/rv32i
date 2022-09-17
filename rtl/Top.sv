@@ -15,11 +15,11 @@ module Top (
     // Control signals
     logic alu_src;
     logic alu_zero;
-    logic result_src;
     logic pc_src;
     logic memwrite;
     logic memread;
     logic [3:0] alu_control;
+    logic [1:0] result_src;
     logic [1:0] imm_sel;
     
     // Data signals
@@ -35,7 +35,6 @@ module Top (
     assign pc_target = pc + immext;
     assign reg_raddr1 = instr[19:15];
     assign reg_raddr2 = instr[24:20];
-    assign reg_wdata = result_src ? readdata_ext: alu_out;
     assign reg_waddr = instr[11:7];
     assign funct3 = instr[14:12];
 
@@ -123,5 +122,13 @@ module Top (
         .out(wdata_ext),
         .funct3(funct3)
     );
+
+    always_comb begin
+        case (result_src)
+            2'b01: reg_wdata = readdata_ext;
+            2'b10: reg_wdata = pc_plus_4; 
+            default: reg_wdata = alu_out; 
+        endcase
+    end
 
 endmodule
