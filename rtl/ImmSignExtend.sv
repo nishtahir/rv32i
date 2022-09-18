@@ -20,7 +20,6 @@ module ImmSignExtend (
     );
 
     SignExtend #(.WIDTH(13)) b_type(
-        
         // > The only difference between the S and B formats is that the 12-bit immediate field is used to encode
         //   branch offsets in multiples of 2 in the B format. Instead of shifting all bits in the instruction-encoded
         //   immediate left by one in hardware as is conventionally done, the middle bits (imm[10:1]) and sign

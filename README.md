@@ -94,10 +94,19 @@ make
 - [x] jalr 
 - [x] beq 
 - [x] bne 
-- [ ] blt 
-- [ ] bge 
+- [x] blt 
+- [x] bge 
 - [ ] bltu 
 - [ ] bgeu 
+
+# Resources
+
+* [The RISC-V Instruction Set Manual. Volume I: User-Level ISA](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf)
+* [RISC-V Assembly Programmer's Manual](https://github.com/riscv-non-isa/riscv-asm-manual/blob/master/riscv-asm.md)
+* [RISC-V Online Assembler](https://riscvasm.lucasteske.dev/#)
+* [RISC-V Online Interpreter](https://www.cs.cornell.edu/courses/cs3410/2019sp/riscv/interpreter/)
+* [RISC-V Instruction Encoder/Decoder](https://luplab.gitlab.io/rvcodecjs/)
+* [RISC-V GNU Compiler Toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain)
 
 # License
 ```

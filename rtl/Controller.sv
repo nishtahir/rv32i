@@ -13,7 +13,6 @@ module Controller (
     output logic [1:0] result_src
 );
     logic [1:0] alu_op;
-    logic [2:0] control_type;
     logic [5:0] control_instr;
     logic [11: 0] alu_instr;
 
@@ -27,8 +26,8 @@ module Controller (
         regwrite = 0;
         memwrite = 0;
         alu_op = 0;
-        control_type = 0;
-
+        pc_src = 0;
+        
         // https://cepdnaclk.github.io/e16-co502-RV32IM-pipeline-implementation-group3/RV32IM%20-%20Sheet1.pdf
         // I couldn't find a reference that names the opcodes specifially so rather than invent my own naming
         // scheme, i'm adding them here as is.
@@ -48,9 +47,25 @@ module Controller (
                 alu_op = 2;
             end
             7'b1100011: begin // B-type branch
-                imm_sel = 2;
-                control_type = 1;
+                imm_sel = 2;                
                 alu_op = 3;
+                // Generate Branch control signal
+                casez (funct3)
+                    3'b000: begin                   // beq
+                        pc_src = alu_zero ? 1 : 0;
+                    end
+                    3'b001: begin                   // bne
+                        pc_src = alu_zero ? 0 : 1;
+                    end
+                    3'b110,                         // bleu
+                    3'b100: begin                   // ble
+                        pc_src = alu_zero ? 1 : 0; 
+                    end
+                    3'b111,                         // bgeu
+                    3'b101: begin                   // bge
+                        pc_src = alu_zero ? 0 : 1;
+                    end
+                endcase
             end
             7'b0010011: begin // I-type arithmetic immediate
                 regwrite = 1;
@@ -62,17 +77,16 @@ module Controller (
                 regwrite = 1;
                 imm_sel = 3;
                 result_src = 2;
-                control_type = 2;
+                pc_src = 1;
             end
             7'b1100111: begin // I-type Jump
                 regwrite = 1;
                 result_src = 2;
-                control_type = 3;
+                pc_src = 2;
             end
         endcase
 
         // Concat signals to derive ALU control signal
-        control_instr = {control_type, funct3};
         alu_instr = {alu_op, funct3, funct7};
     end
 
@@ -91,18 +105,14 @@ module Controller (
             12'b10_001_???????: alu_control = 7; // slli
             12'b10_101_00?????: alu_control = 8; // srl
             12'b10_101_01?????: alu_control = 9; // sra
+
             12'b11_000_???????: alu_control = 5; // xor
             12'b11_001_???????: alu_control = 5; // xor
+            12'b11_100_???????: alu_control = 4; // slt
+            12'b11_110_???????: alu_control = 6; // sltu
+            12'b11_101_???????: alu_control = 4; // slt
+            12'b11_111_???????: alu_control = 6; // sltu
             default: alu_control = 0;
-        endcase
-
-        // Generate Branch control signal
-        casez (control_instr)
-            6'b001_000: pc_src = alu_zero ? 1 : 0;  // beq
-            6'b001_001: pc_src = alu_zero ? 0 : 1; // bne
-            6'b010_???: pc_src = 1; // jump
-            6'b011_???: pc_src = 2; // i-jump
-            default: pc_src = 0;
         endcase
     end
 

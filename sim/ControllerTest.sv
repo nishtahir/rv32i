@@ -9,13 +9,13 @@ module ControllerTest;
     logic [6:0] funct7;
     logic alu_zero;
     logic alu_src;
-    logic result_src;
-    logic pc_src;
     logic memwrite;
     logic memread;
     logic regwrite;
     logic [3:0] alu_control;
     logic [1:0] imm_sel;
+    logic [1:0] pc_src;
+    logic [1:0] result_src;
     
     Controller uut(
         .opcode(opcode),

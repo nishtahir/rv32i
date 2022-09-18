@@ -35,11 +35,11 @@ fff00893 // addi x17, x0, -1
 015a8463 // beq x21, x21, 8 - skips next
 00000000 
 000a8463 // beq x21, x0, 8 - DOES NOT skip next
-000a9463 // bne x21, x0, 8
+000a9463 // bne x21, x0, 8 - skips next
 00000000
+01504463 // blt x0, x21, 8 - skips next
 00000000
-00000000
-00000000
+000ac463 // blt x21, x0, 8 - DOES NOT skip next
 00000000
 00000000
 00000000
