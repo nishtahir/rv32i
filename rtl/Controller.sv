@@ -65,10 +65,10 @@ module Controller (
                 result_src = 2;
                 pc_src = 1;
             end
-            7'b1100111: begin
+            7'b1100111: begin // I-type Jump
                 regwrite = 1;
                 result_src = 2;
-                pc_src = 3;
+                pc_src = 2;
             end
         endcase
         // pc_src = (alu_zero & branch) | jump;

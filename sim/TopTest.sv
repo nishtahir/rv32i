@@ -169,7 +169,9 @@ module TopTest;
         _assert(reg_wdata === 32'h00000080, "jal x21, 4");
 
         #2
-        _assert(pc === 32'h00000080, "jal x21, 4"); // next PC should be jump target
+        _assert(pc === 32'h00000080, "jalr x21, x21, 4"); // next PC should be jump target
+        _assert(reg_waddr === 5'h15, "jalr x21, x21, 4");
+        _assert(reg_wdata === 32'h00000084, "jal x21, 4");
 
 
         #10 
