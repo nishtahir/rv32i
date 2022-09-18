@@ -1,6 +1,6 @@
-module ImmSignExtend (
+module ImmGen (
     input logic [31:0] instr,
-    input logic [1:0] imm_sel,
+    input logic [2:0] imm_sel,
     output logic [31:0] out
 );
 
@@ -8,6 +8,7 @@ module ImmSignExtend (
     logic [31:0] imm_s;
     logic [31:0] imm_b;
     logic [31:0] imm_j;
+    logic [31:0] imm_u;
 
     SignExtend #(.WIDTH(12)) i_type(
         .in(instr[31:20]),
@@ -38,11 +39,14 @@ module ImmSignExtend (
     );
 
     always_comb begin
+        imm_u = {instr[31:12], 12'h000};
+
         case (imm_sel)
-            2'b00: out = imm_i; 
-            2'b01: out = imm_s;
-            2'b10: out = imm_b;
-            2'b11: out = imm_j;
+            3'b000: out = imm_i; 
+            3'b001: out = imm_s;
+            3'b010: out = imm_b;
+            3'b011: out = imm_j;
+            3'b100: out = imm_u;
             default: out = imm_i;
         endcase
     end

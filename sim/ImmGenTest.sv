@@ -8,7 +8,7 @@ module ImmSignExtendTest();
     logic [31:0] out;
 
 
-    ImmSignExtend uut(
+    ImmGen uut(
         .instr(instr),
         .imm_sel(imm_sel),
         .out(out)

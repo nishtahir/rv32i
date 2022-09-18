@@ -48,7 +48,7 @@ make
 
 # Supported Instructions
 
-- [ ] lui 
+- [x] lui 
 - [ ] auipc 
 - [x] addi 
 - [x] slti 
@@ -96,8 +96,8 @@ make
 - [x] bne 
 - [x] blt 
 - [x] bge 
-- [ ] bltu 
-- [ ] bgeu 
+- [x] bltu 
+- [x] bgeu 
 
 # Resources
 

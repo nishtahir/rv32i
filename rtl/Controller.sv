@@ -9,7 +9,7 @@ module Controller (
     output logic regwrite,
     output logic [3:0] alu_control,
     output logic [1:0] pc_src,
-    output logic [1:0] imm_sel,
+    output logic [2:0] imm_sel,
     output logic [1:0] result_src
 );
     logic [1:0] alu_op;
@@ -59,11 +59,11 @@ module Controller (
                     end
                     3'b110,                         // bleu
                     3'b100: begin                   // ble
-                        pc_src = alu_zero ? 1 : 0; 
+                        pc_src = alu_zero ? 0 : 1; 
                     end
                     3'b111,                         // bgeu
                     3'b101: begin                   // bge
-                        pc_src = alu_zero ? 0 : 1;
+                        pc_src = alu_zero ? 1 : 0;
                     end
                 endcase
             end
@@ -83,6 +83,11 @@ module Controller (
                 regwrite = 1;
                 result_src = 2;
                 pc_src = 2;
+            end
+            7'b0110111: begin // lui
+                regwrite = 1;
+                imm_sel = 4;
+                result_src = 3;
             end
         endcase
 

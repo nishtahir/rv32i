@@ -190,7 +190,16 @@ module TopTest;
         #2
         _assert(pc === 32'h00000098, "bne x21, x0, 8"); // next PC should be jump target
 
-        #10 
+        #2
+        _assert(pc === 32'h000000A0, "blt x0, x21, 8");
+
+        #2
+        _assert(pc === 32'h000000A4, "blt x21, x0, 8");
+        // lui
+        _assert(reg_waddr === 5'h16, "lui x22, 524289");
+        _assert(reg_wdata === 32'h80001000, "lui x22, 524289");
+
+        #10
         $finish;
     end
 

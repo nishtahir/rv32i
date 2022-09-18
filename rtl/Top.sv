@@ -20,7 +20,7 @@ module Top (
     logic [1:0] pc_src;
     logic [3:0] alu_control;
     logic [1:0] result_src;
-    logic [1:0] imm_sel;
+    logic [2:0] imm_sel;
     
     // Data signals
     logic [31:0] pc_target;
@@ -82,7 +82,7 @@ module Top (
         .rd2(rd2)
     );
 
-    ImmSignExtend extend (
+    ImmGen extend (
         .instr(instr),
         .imm_sel(imm_sel),
         .out(immext)
@@ -127,6 +127,7 @@ module Top (
         case (result_src)
             2'b01: reg_wdata = readdata_ext;
             2'b10: reg_wdata = pc_plus_4; 
+            3'b11: reg_wdata = immext;
             default: reg_wdata = alu_out; 
         endcase
 
