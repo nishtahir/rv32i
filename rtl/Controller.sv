@@ -4,11 +4,11 @@ module Controller (
     input logic [6:0] funct7,
     input logic alu_zero,
     output logic alu_src,
-    output logic pc_src,
     output logic memwrite,
     output logic memread,
     output logic regwrite,
     output logic [3:0] alu_control,
+    output logic [1:0] pc_src,
     output logic [1:0] imm_sel,
     output logic [1:0] result_src
 );
@@ -28,7 +28,6 @@ module Controller (
         regwrite = 0;
         memwrite = 0;
         alu_op = 0;
-        branch = 0;
         jump = 0;
 
         // https://cepdnaclk.github.io/e16-co502-RV32IM-pipeline-implementation-group3/RV32IM%20-%20Sheet1.pdf
@@ -52,7 +51,7 @@ module Controller (
             7'b1100011: begin // B-type branch
                 imm_sel = 2;
                 alu_op = 1;
-                branch = 1;
+                pc_src = alu_zero ? 1 : 0;
             end
             7'b0010011: begin // I-type arithmetic immediate
                 regwrite = 1;
@@ -61,13 +60,18 @@ module Controller (
                 alu_op = 2;
             end
             7'b1101111: begin // J-type Jump
-                branch = 0;
                 regwrite = 1;
                 imm_sel = 3;
                 result_src = 2;
+                pc_src = 1;
+            end
+            7'b1100111: begin
+                regwrite = 1;
+                result_src = 2;
+                pc_src = 3;
             end
         endcase
-        pc_src = (alu_zero & branch) | jump;
+        // pc_src = (alu_zero & branch) | jump;
 
         // Concat signals to derive ALU control signal
         alu_instr = {alu_op, funct3, funct7};

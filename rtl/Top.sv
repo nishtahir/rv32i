@@ -15,15 +15,16 @@ module Top (
     // Control signals
     logic alu_src;
     logic alu_zero;
-    logic pc_src;
     logic memwrite;
     logic memread;
+    logic [1:0] pc_src;
     logic [3:0] alu_control;
     logic [1:0] result_src;
     logic [1:0] imm_sel;
     
     // Data signals
     logic [31:0] pc_target;
+    logic [31:0] pc_next;
     logic [31:0] pc_plus_4; 
     logic [31:0] readdata;
     logic [31:0] readdata_ext;
@@ -32,7 +33,6 @@ module Top (
     logic [31:0] alu_out;
     logic [2:0] funct3;
 
-    assign pc_target = pc + immext;
     assign reg_raddr1 = instr[19:15];
     assign reg_raddr2 = instr[24:20];
     assign reg_waddr = instr[11:7];
@@ -41,7 +41,7 @@ module Top (
     ProgramCounter counter(
         .clk(clk),
         .rst(rst),
-        .next(pc_src ? pc_target : pc_plus_4),
+        .next(pc_next),
         .pc(pc),
         .pcplus4(pc_plus_4)
     );
@@ -128,6 +128,12 @@ module Top (
             2'b01: reg_wdata = readdata_ext;
             2'b10: reg_wdata = pc_plus_4; 
             default: reg_wdata = alu_out; 
+        endcase
+
+        case (pc_src) 
+            2'b01: pc_next = pc + immext;
+            2'b10: pc_next = (rd1 + immext) & ~(32'h00000001);
+            default: pc_next = pc_plus_4;
         endcase
     end
 
