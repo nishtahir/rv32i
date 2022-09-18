@@ -13,9 +13,9 @@ module Controller (
     output logic [1:0] result_src
 );
     logic [1:0] alu_op;
+    logic [2:0] control_type;
+    logic [5:0] control_instr;
     logic [11: 0] alu_instr;
-    logic branch;
-    logic jump;
 
     // We always want this enabled
     assign memread = 1;
@@ -23,12 +23,11 @@ module Controller (
     always_comb begin
         alu_src = 0;
         imm_sel = 0;
-        pc_src = 0;
         result_src = 0;
         regwrite = 0;
         memwrite = 0;
         alu_op = 0;
-        jump = 0;
+        control_type = 0;
 
         // https://cepdnaclk.github.io/e16-co502-RV32IM-pipeline-implementation-group3/RV32IM%20-%20Sheet1.pdf
         // I couldn't find a reference that names the opcodes specifially so rather than invent my own naming
@@ -50,8 +49,8 @@ module Controller (
             end
             7'b1100011: begin // B-type branch
                 imm_sel = 2;
-                alu_op = 1;
-                pc_src = alu_zero ? 1 : 0;
+                control_type = 1;
+                alu_op = 3;
             end
             7'b0010011: begin // I-type arithmetic immediate
                 regwrite = 1;
@@ -63,36 +62,47 @@ module Controller (
                 regwrite = 1;
                 imm_sel = 3;
                 result_src = 2;
-                pc_src = 1;
+                control_type = 2;
             end
             7'b1100111: begin // I-type Jump
                 regwrite = 1;
                 result_src = 2;
-                pc_src = 2;
+                control_type = 3;
             end
         endcase
-        // pc_src = (alu_zero & branch) | jump;
 
         // Concat signals to derive ALU control signal
+        control_instr = {control_type, funct3};
         alu_instr = {alu_op, funct3, funct7};
     end
 
-    // Generate ALU control signal
     always_comb begin
+        // Generate ALU control signal
         casez (alu_instr)
             12'b00_???_???????: alu_control = 0; // add
             12'b01_???_???????: alu_control = 1; // sub
-            12'b??_000_0100000: alu_control = 1; // sub
-            12'b??_000_0000000: alu_control = 0; // add
-            12'b??_010_???????: alu_control = 4; // slti
-            12'b??_110_???????: alu_control = 3; // or
-            12'b??_111_???????: alu_control = 2; // and
-            12'b??_100_???????: alu_control = 5; // xor
-            12'b??_011_???????: alu_control = 6; // sltiu
-            12'b??_001_???????: alu_control = 7; // slli
-            12'b??_101_00?????: alu_control = 8; // srl
-            12'b??_101_01?????: alu_control = 9; // sra
+            12'b10_000_0100000: alu_control = 1; // sub
+            12'b10_000_0000000: alu_control = 0; // add
+            12'b10_010_???????: alu_control = 4; // slti
+            12'b10_110_???????: alu_control = 3; // or
+            12'b10_111_???????: alu_control = 2; // and
+            12'b10_100_???????: alu_control = 5; // xor
+            12'b10_011_???????: alu_control = 6; // sltiu
+            12'b10_001_???????: alu_control = 7; // slli
+            12'b10_101_00?????: alu_control = 8; // srl
+            12'b10_101_01?????: alu_control = 9; // sra
+            12'b11_000_???????: alu_control = 5; // xor
+            12'b11_001_???????: alu_control = 5; // xor
             default: alu_control = 0;
+        endcase
+
+        // Generate Branch control signal
+        casez (control_instr)
+            6'b001_000: pc_src = alu_zero ? 1 : 0;  // beq
+            6'b001_001: pc_src = alu_zero ? 0 : 1; // bne
+            6'b010_???: pc_src = 1; // jump
+            6'b011_???: pc_src = 2; // i-jump
+            default: pc_src = 0;
         endcase
     end
 

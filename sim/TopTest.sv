@@ -173,6 +173,22 @@ module TopTest;
         _assert(reg_waddr === 5'h15, "jalr x21, x21, 4");
         _assert(reg_wdata === 32'h00000084, "jal x21, 4");
 
+        #2
+        _assert(pc === 32'h00000084, "beq x21, x21, 8"); // next PC should be PC + Branch offset
+        _assert(reg_write === 0, "beq x21, x21, 8");
+
+        #2
+        // Next instruction should be skipped
+        _assert(pc === 32'h0000008C, "beq x21, x21, 8"); // next PC should be jump target
+        _assert(reg_write === 0, "beq x21, x0, 8");
+
+        #2
+        // Next instruction should NOT be skipped        
+        _assert(pc === 32'h00000090, "bne x21, x0, 8"); // next PC should be jump target
+        _assert(reg_write === 0, "bne x21, x0, 8");
+
+        #2
+        _assert(pc === 32'h00000098, "bne x21, x0, 8"); // next PC should be jump target
 
         #10 
         $finish;

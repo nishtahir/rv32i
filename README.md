@@ -92,8 +92,8 @@ make
 - [x] sw 
 - [x] jal 
 - [x] jalr 
-- [ ] beq 
-- [ ] bne 
+- [x] beq 
+- [x] bne 
 - [ ] blt 
 - [ ] bge 
 - [ ] bltu 
