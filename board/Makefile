@@ -24,7 +24,7 @@ endif
 
 default: all
 
-.PHONY:all
+.PHONY: all
 all: $(PCF) $(NET) $(ASC) $(BIN)
 
 .PHONY: clean
@@ -39,7 +39,7 @@ $(PCF):
 	cat $(BOARD)/*.pcf > $(BUILD)/constraints.pcf
 
 $(NET): $(SV)
-	$(YOSYS) $(YOSYS_FLAGS) -p 'synth_ice40 -top $(TOP) -json $(NET)' $(RTL)/*.sv
+	$(YOSYS) $(YOSYS_FLAGS) -p 'synth_ice40 -dsp -abc2 -top $(TOP) -json $(NET)' $(RTL)/*.sv
 
 $(ASC): $(NET) $(PCF)
 	$(PNR) $(PNR_FLAGS) --json $(NET)  --pcf $(PCF)  --asc $(ASC)

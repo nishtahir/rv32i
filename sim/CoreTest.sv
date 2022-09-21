@@ -1,4 +1,4 @@
-module TopTest;
+module CoreTest;
     task _assert(input condition, input [1024*8-1:0] message);
         if(!condition) begin
             $display("Assertion Error: %s", message);
@@ -17,7 +17,7 @@ module TopTest;
     logic memwrite;
     logic reg_write;
     
-    Top uut(
+    Core uut(
         .clk(clk),
         .rst(rst),
         .reg_waddr(reg_waddr),
@@ -28,8 +28,8 @@ module TopTest;
     );
 
     initial begin
-        $dumpfile("../build/TopTest.vcd");
-        $dumpvars(0, TopTest);
+        $dumpfile("../build/CoreTest.vcd");
+        $dumpvars(0, CoreTest);
  
         #2 
         _assert(reg_waddr === 5'h01, "addi x1 , x0, 1000");

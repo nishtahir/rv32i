@@ -14,7 +14,6 @@ clean: ## Deletes and recreates the build folder
 sim: ## Run simulations
 	make -C sim all BOARD=$(BOARD)
  
-
 .PHONY: program
 program: ## Program the given BOARD
 	make -C board program BOARD=$(BOARD)

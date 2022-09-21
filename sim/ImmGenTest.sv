@@ -1,4 +1,4 @@
-module ImmSignExtendTest();
+module ImmGenTest();
 
     logic rst = 1;
     logic clk = 0;
@@ -16,8 +16,8 @@ module ImmSignExtendTest();
 
     always #1 clk = !clk;
     initial begin
-        $dumpfile("../build/ImmSignExtendTest.vcd");
-        $dumpvars(0, ImmSignExtendTest);
+        $dumpfile("../build/ImmGenTest.vcd");
+        $dumpvars(0, ImmGenTest);
 
         #2 
         instr = 32'hFFC4A303;

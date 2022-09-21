@@ -10,7 +10,7 @@ module ProgramCounter(
     assign pc = counter;
     assign pcplus4 = counter + 4;
 
-    always_ff @(posedge clk) begin
+    always @(posedge clk) begin
         if(rst)
             counter = 0;
         else

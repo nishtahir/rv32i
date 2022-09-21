@@ -1,141 +1,47 @@
 module Top (
     input logic clk,
-    input logic rst,
-    // Debug signals
-    output logic reg_write,
-    output logic [31:0] pc,
-    output logic [31:0] instr,
-    output logic [4:0] reg_raddr1,
-    output logic [4:0] reg_raddr2,
-    output logic [4:0] reg_waddr,
-    output logic [31:0] reg_wdata,
-    output logic [31:0] rd1,
-    output logic [31:0] rd2
+    input logic uart_rx,
+    input logic[1:0] SW,
+    output logic LED_G,
+    output logic LED_R,
+    output logic LED_B,
+    output logic uart_tx
 );
-    // Control signals
-    logic alu_src;
-    logic alu_zero;
-    logic memwrite;
-    logic memread;
-    logic [1:0] pc_src;
-    logic [3:0] alu_control;
-    logic [1:0] result_src;
-    logic [2:0] imm_sel;
-    
-    // Data signals
-    logic [31:0] pc_target;
-    logic [31:0] pc_next;
-    logic [31:0] pc_plus_4; 
-    logic [31:0] readdata;
-    logic [31:0] readdata_ext;
-    logic [31:0] wdata_ext;
-    logic [31:0] immext;
-    logic [31:0] alu_out;
-    logic [2:0] funct3;
+    logic rst;
+    logic global_clk;
+    logic uart_clk;
+    logic sys_clk;
+    logic [31:0] io_uart;
 
-    assign reg_raddr1 = instr[19:15];
-    assign reg_raddr2 = instr[24:20];
-    assign reg_waddr = instr[11:7];
-    assign funct3 = instr[14:12];
+    UartClock uart_clk_gen(
+        .clock_in(clk),
+        .uart_clk(uart_clk),
+        .global_clk(global_clk)
+    );
 
-    ProgramCounter counter(
-        .clk(clk),
+    ClockDivider sys_clk_gen(
+        .clk(global_clk),
         .rst(rst),
-        .next(pc_next),
-        .pc(pc),
-        .pcplus4(pc_plus_4)
+        .out(sys_clk)
     );
 
-    Rom #(
-        .MEM_WIDTH(32),
-        .MEM_DEPTH(64)
-    ) imem (
-        // We're assuming that the last 2 bits of the pc will always be 0
-        // since they are assumed to be multiples ol 4
-        // This should be 6 bits wide since the memory depth is 2^6 = 64
-        // https://arstechnica.com/civis/viewtopic.php?t=801655
-        .addr(pc[7:2]),
-        .dout(instr)
+    UartTx tx(
+        .clk(uart_clk),
+        .rst(rst),
+        .send(io_uart[8]),
+        .data(io_uart[7:0]),
+        .uart_tx(uart_tx)
     );
 
-    Ram #(
-        .MEM_WIDTH(32),
-        .MEM_DEPTH(256)
-    ) datamem (
-        .clk(clk),
-        .wen(memwrite),
-        .ren(memread),
-        .waddr(alu_out[7:0]),
-        .raddr(alu_out[7:0]),
-        .wdata(wdata_ext),
-        .rdata(readdata)
+    Core riscv(
+        .clk(sys_clk),
+        .rst(rst),
+        .io_uart(io_uart)
     );
 
-    RegisterFile regfile(
-        .clk(clk),
-        .we(reg_write),
-        .raddr1(reg_raddr1), // rs1
-        .raddr2(reg_raddr2), // rs2
-        .waddr(reg_waddr),   // rd
-        .wdata(reg_wdata),  
-        .rd1(rd1),
-        .rd2(rd2)
-    );
-
-    ImmGen extend (
-        .instr(instr),
-        .imm_sel(imm_sel),
-        .out(immext)
-    );
-
-    Alu alu(
-        .a(rd1),
-        .b(alu_src ? immext: rd2),
-        .control(alu_control),
-        .zero(alu_zero),
-        .out(alu_out)
-    );
-
-    Controller controller(
-        .opcode(instr[6:0]),
-        .funct3(funct3),
-        .funct7(instr[31:25]),
-        .alu_zero(alu_zero),
-        .alu_src(alu_src),
-        .result_src(result_src),
-        .pc_src(pc_src),
-        .memwrite(memwrite),
-        .memread(memread),
-        .regwrite(reg_write),
-        .alu_control(alu_control),
-        .imm_sel(imm_sel)
-    );
-
-    ResultExtender result_ext(
-        .in(readdata),
-        .out(readdata_ext),
-        .funct3(funct3)
-    );
-
-    RegisterTruncater rd_trunc(
-        .in(rd2),
-        .out(wdata_ext),
-        .funct3(funct3)
-    );
-
-    always_comb begin
-        case (result_src)
-            2'b01: reg_wdata = readdata_ext;
-            2'b10: reg_wdata = pc_plus_4; 
-            3'b11: reg_wdata = immext;
-            default: reg_wdata = alu_out; 
-        endcase
-
-        case (pc_src) 
-            2'b01: pc_next = pc + immext;
-            2'b10: pc_next = (rd1 + immext) & ~(32'h00000001);
-            default: pc_next = pc_plus_4;
-        endcase
-    end
+    assign rst = ~SW[0];
+    assign LED_G = ~io_uart[0];
+    assign LED_R = ~io_uart[1];
+    assign LED_B = ~io_uart[2];
 
 endmodule

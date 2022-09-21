@@ -1,6 +1,9 @@
 # https://github.com/wuxx/icesugar/blob/master/src/common/io.pcf
 # For the iCESugar Board (iCE40UP5K-QFN48)
 
+# Clock divider net freq
+set_frequency sys_clk 6
+
 set_io LED_G 41
 set_io LED_R 40
 set_io LED_B 39
@@ -12,8 +15,8 @@ set_io SW[3] 21
 
 set_io clk   35
 
-set_io RX    4
-set_io TX    6
+set_io uart_rx    4
+set_io uart_tx    6
 
 set_io USB_DP       10
 set_io USB_DN       9
