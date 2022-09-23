@@ -3,7 +3,9 @@ module Core (
     input logic rst,
     output logic [7:0] io_addr,
     output logic [31:0] io_data,
-    output logic [31:0] io_uart,
+    output logic [31:0] io_uart_io_reg,
+    output logic [31:0] io_uart_csr_reg,
+    output logic [31:0] io_gpio_io_reg,
     // Debug signals
     output logic reg_write,
     output logic [31:0] pc,
@@ -65,13 +67,15 @@ module Core (
         .clk(clk),
         .wen(memwrite),
         .ren(memread),
-        .waddr(alu_out[13:0]),
-        .raddr(alu_out[13:0]),
+        .waddr(alu_out[15:0]),
+        .raddr(alu_out[15:0]),
         .wdata(wdata_ext),
         .rdata(readdata),
         .io_addr(io_addr),
         .io_data(io_data),
-        .io_uart(io_uart)
+        .io_uart_io_reg(io_uart_io_reg),
+        .io_uart_csr_reg(io_uart_csr_reg),
+        .io_gpio_io_reg(io_gpio_io_reg)
     );
 
     RegisterFile regfile(

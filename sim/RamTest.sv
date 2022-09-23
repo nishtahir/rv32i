@@ -7,15 +7,12 @@ module RamTest;
     logic wen = 0;
     logic ren = 1;
 
-    logic [7:0] waddr = 0;
-    logic [7:0] raddr = 0;
+    logic [13:0] waddr = 0;
+    logic [13:0] raddr = 0;
     logic [31:0] wdata = 0;
     logic [31:0] rdata;
 
-    Ram #(
-        .MEM_WIDTH(32),
-        .MEM_DEPTH(256)
-    ) uut(
+    Ram uut(
         .clk(clk),
         .wen(wen),
         .ren(ren),

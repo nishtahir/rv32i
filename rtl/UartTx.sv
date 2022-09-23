@@ -59,7 +59,6 @@ module UartTx #(
     clear <= 0;
     uart_tx <= 1;
 
-
     case(state) 
     IDLE: begin
       if(send) begin

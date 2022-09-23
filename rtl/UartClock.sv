@@ -35,4 +35,8 @@ module UartClock(
 		.PLLOUTGLOBALB(uart_clk)
 	);
 
+	// SIM
+	// assign global_clk = clock_in;
+	// assign uart_clk = clock_in;
+
 endmodule

@@ -12,13 +12,13 @@ module AddressDecoder (
         wen2 = 0;
         wen3 = 0;
         case (addr[13:10])
-            4'b1000: begin
+            4'b0010: begin
                 if(wen) begin
                     wen2 = 1;
                 end
                 out_sel = 1;
             end
-            4'b1100: begin
+            4'b0011: begin
                 if(wen) begin
                     wen3 = 1;
                 end
