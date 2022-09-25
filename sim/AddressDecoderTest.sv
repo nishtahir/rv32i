@@ -9,7 +9,6 @@ module AddressDecoderTest;
     logic[13:0] addr;
     logic wen1;
     logic wen2;
-    logic wen3;
     logic[1:0] out_sel;
 
     AddressDecoder uut(
@@ -18,7 +17,6 @@ module AddressDecoderTest;
         .addr(addr),
         .wen1(wen1),
         .wen2(wen2),
-        .wen3(wen3),
         .out_sel(out_sel)
     );
 

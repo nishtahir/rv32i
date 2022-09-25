@@ -1,5 +1,6 @@
 BUILD = ../build
 RTL = ../rtl
+ROOT = ../
 
 YOSYS ?= yosys
 YOSYS_FLAGS ?= -q
@@ -14,6 +15,7 @@ NET = $(BUILD)/out.json
 ASC = $(BUILD)/out.asc
 BIN = $(BUILD)/out.bin
 SV = $(RTL)/*.sv
+MEM = $(ROOT)*.mem
 
 # Replace with your top module
 TOP = Top
@@ -38,7 +40,7 @@ program: $(BIN)
 $(PCF): 
 	cat $(BOARD)/*.pcf > $(BUILD)/constraints.pcf
 
-$(NET): $(SV)
+$(NET): $(SV) $(MEM)
 	$(YOSYS) $(YOSYS_FLAGS) -p 'synth_ice40 -dsp -abc2 -top $(TOP) -json $(NET)' $(RTL)/*.sv
 
 $(ASC): $(NET) $(PCF)

@@ -26,7 +26,7 @@ module TopTest;
 
 
 
-        #100 $finish;
+        #200 $finish;
     end
 
 endmodule

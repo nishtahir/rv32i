@@ -5,8 +5,8 @@ module Memory (
     input logic [15:0] waddr,
     input logic [15:0] raddr,
     input logic [31:0] wdata,
-    output logic [31:0] rdata,
     input logic [7:0] io_addr,    
+    output logic [31:0] rdata,
     output logic [31:0] io_data,
     output logic [31:0] io_uart_io_reg,
     output logic [31:0] io_uart_csr_reg,
@@ -15,17 +15,16 @@ module Memory (
 
     logic wen1;
     logic wen2;
-    logic wen3;
     logic [1:0] dec_out;
     logic [31:0] ram_out;
-    logic [31:0] io_mem [7:0];
+    logic [31:0] io_mem [13:0];
     logic [13: 0] waddr_aligned;
     logic [13: 0] raddr_aligned;
 
     // Memory is word aligned. 
     // Last 2 bits are always 0
-    assign waddr_aligned = waddr[13:2];
-    assign raddr_aligned = raddr[13:2];
+    assign waddr_aligned = waddr[15:2];
+    assign raddr_aligned = raddr[15:2];
 
     assign io_data = io_mem[io_addr];
     assign io_uart_io_reg = io_mem[0];
@@ -35,10 +34,9 @@ module Memory (
     AddressDecoder decoder(
         .wen(wen),
         .ren(ren),
-        .addr(waddr_aligned),
+        .addr(waddr),
         .wen1(wen1),
         .wen2(wen2),
-        .wen3(wen3),
         .out_sel(dec_out)
     );
 
