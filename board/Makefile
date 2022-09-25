@@ -37,6 +37,10 @@ clean:
 program: $(BIN)
 	$(PROGRAM) $(PROGRAM_FLAGS) $(BIN)
 
+.PHONY: schematics
+schematics:
+	../scripts/schematics.sh
+
 $(PCF): 
 	cat $(BOARD)/*.pcf > $(BUILD)/constraints.pcf
 

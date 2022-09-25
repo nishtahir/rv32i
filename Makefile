@@ -18,6 +18,10 @@ sim: ## Run simulations
 program: ## Program the given BOARD
 	make -C board program BOARD=$(BOARD)
  
+.PHONY: schematics
+schematics: ## Program the given BOARD
+	make -C board schematics BOARD=$(BOARD)
+ 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
 help: ## Print this help message
