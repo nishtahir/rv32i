@@ -134,7 +134,7 @@ module Core (
         case (result_src)
             2'b01: reg_wdata = readdata_ext;
             2'b10: reg_wdata = pc_plus_4; 
-            3'b11: reg_wdata = immext;
+            2'b11: reg_wdata = immext;
             default: reg_wdata = alu_out; 
         endcase
 

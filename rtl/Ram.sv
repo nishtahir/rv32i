@@ -10,7 +10,7 @@ module Ram (
     `ifdef SIMULATION
         // Calculate the number of bits required for the address
         localparam MEM_WIDTH = 32;
-        localparam MEM_DEPTH = 16000;
+        localparam MEM_DEPTH = 256;
 
         logic [MEM_WIDTH - 1:0]  mem [0:MEM_DEPTH - 1];
 
