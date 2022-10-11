@@ -1,7 +1,7 @@
 module UartCore (
     input logic clk,
     input logic rst,
-    // TODO - send on write
+    // TODO - clear on write
     input logic tx_send,
     // TODO - clear on read
     input logic rx_read,
@@ -19,11 +19,11 @@ module UartCore (
         .uart_tx(uart_tx)
     );
 
-    // UartRx rx(
-    //     .clk(clk),
-    //     .rst(rst),
-    //     .uart_rx(uart_rx),
-    //     .data(uart_io_reg[15:8])
-    // );
+    UartRx rx(
+        .clk(clk),
+        .rst(rst),
+        .uart_rx(uart_rx),
+        .data(uart_io_reg[15:8])
+    );
 
 endmodule

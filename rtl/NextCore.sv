@@ -31,7 +31,6 @@ module NextCore (
     logic addr_src;
     logic [3:0] alu_control;
     logic [2:0] imm_sel;
-    logic [1:0] pc_src;
     logic [1:0] result_src;
     logic [1:0] alu_a_src;
     logic [1:0] alu_b_src;
@@ -72,7 +71,6 @@ module NextCore (
         .addr_src(addr_src),
         .alu_control(alu_control),
         .imm_sel(imm_sel),
-        .pc_src(pc_src),
         .result_src(result_src),
         .alu_a_src(alu_a_src),
         .alu_b_src(alu_b_src)
