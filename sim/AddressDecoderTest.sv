@@ -6,7 +6,7 @@ module AddressDecoderTest;
 
     logic wen;
     logic ren;
-    logic[13:0] addr;
+    logic[15:0] addr;
     logic wen1;
     logic wen2;
     logic[1:0] out_sel;

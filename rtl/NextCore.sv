@@ -51,7 +51,6 @@ module NextCore (
     logic [31:0] rd2;
     
 
-
     assign reg_raddr1 = instr[19:15];
     assign reg_raddr2 = instr[24:20];
     assign reg_waddr = instr[11:7];
