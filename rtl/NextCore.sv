@@ -40,7 +40,6 @@ module NextCore (
 
     // Data signals
     logic alu_zero;
-    logic [2:0] funct3;
     logic [31:0] pc_next;
     logic [31:0] imm_ext;
     logic [31:0] alu_out;
@@ -48,10 +47,14 @@ module NextCore (
     logic [31:0] alu_b;
 
     logic [31:0] rdata;
+    logic [31:0] rdata_ext;
     logic [31:0] result_out;
     logic [31:0] rd1;
     logic [31:0] rd2;
     
+    logic [6:0] opcode;
+    logic [2:0] funct3;
+    logic [6:0] funct7;
 
     assign reg_raddr1 = instr[19:15];
     assign reg_raddr2 = instr[24:20];
@@ -60,19 +63,22 @@ module NextCore (
     assign pc_next = result_out;
     assign mem_wdata = rd2;
 
+    assign opcode = instr[6:0];
+    assign funct3 = instr[14:12];
+    assign funct7 = instr[31:25];
+
     NextController controller(
         .clk(clk),
         .rst(rst),
         .alu_zero(alu_zero),
-        .opcode(instr[6:0]),
-        .funct3(instr[14:12]),
-        .funct7(instr[31:25]),
+        .opcode(opcode),
+        .funct3(funct3),
+        .funct7(funct7),
         .instr_flop_wen(instr_flop_wen),
         .pc_wen(pc_wen),
         .mem_write(mem_write),
         .mem_read(mem_read),
         .reg_write(reg_write),
-        .waddr_src(waddr_src),
         .addr_src(addr_src),
         .alu_control(alu_control),
         .imm_sel(imm_sel),
@@ -93,8 +99,9 @@ module NextCore (
         .clk(clk),
         .wen(mem_write),
         .ren(mem_read),
-        .waddr(mem_addr[15:0]),
-        .raddr(mem_addr[15:0]),
+        // Assume memory access is byte aligned
+        .waddr(mem_addr[17:2]),
+        .raddr(mem_addr[17:2]),
         .wdata(mem_wdata),
         .rdata(mem_rdata),
         .io_addr(io_addr),
@@ -137,7 +144,6 @@ module NextCore (
         .out(rd2)
     );
 
-
     ImmGen imm_gen (
         .instr(instr),
         .imm_sel(imm_sel),
@@ -166,6 +172,12 @@ module NextCore (
         .out(rdata)
     );
 
+    ResultExtender result_ext(
+        .in(rdata),
+        .funct3(funct3),
+        .out(rdata_ext)
+    );
+
     Mux3 alu_a_mux (
         .select(alu_a_src),
         .d00(pc), 
@@ -185,12 +197,13 @@ module NextCore (
     Mux3 alu_result_mux (
         .select(result_src),
         .d00(alu_out), 
-        .d01(rdata), 
+        .d01(rdata_ext), 
         .d10(alu_result),
         .q(result_out)
     );
 
     Mux2 mem_addr_mux (
+        .select(addr_src),
         .d0(pc),
         .d1(result_out),
         .q(mem_addr)

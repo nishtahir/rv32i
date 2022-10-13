@@ -19,33 +19,21 @@ module NextMemory (
     localparam MEM_DEPTH = 256;
 
     logic [MEM_WIDTH - 1:0]  mem [0:MEM_DEPTH - 1];
-
     assign io_data = mem[io_addr];
 
-    // initial begin
-    //     // Zero out RAM
-    //     for (integer i = 0; i < MEM_DEPTH; i = i + 1) begin
-    //         mem[i] = 0;
-    //     end
-    // end
     initial begin
         $readmemh("../nextrom.mem", mem, 0, MEM_DEPTH - 1);
     end
 
-    // Interact with the memory block
     always @(posedge clk) begin
         if (wen) begin
-            // We're assuming that access will always be
-            // byte aligned
-            mem[waddr[15:2]] = wdata;
+            mem[waddr] = wdata;
         end
     end
 
     always_comb begin
         if (ren) begin
-            // We're assuming that access will always be
-            // byte aligned
-            rdata = mem[raddr[15:2]];
+            rdata = mem[raddr];
         end 
         else begin
             rdata = 0;

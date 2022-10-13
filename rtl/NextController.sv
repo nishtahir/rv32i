@@ -7,7 +7,6 @@ module NextController (
     input logic [6:0] funct7,
     output logic instr_flop_wen,
     output logic pc_wen,
-    output logic waddr_src,
     output logic addr_src,
     output logic mem_write,
     output logic mem_read,
@@ -26,9 +25,9 @@ module NextController (
     localparam OP_B = 7'b1100011;
     localparam OP_J = 7'b1101111;
     
-    logic [1:0] alu_op;
     logic pc_update;
     logic branch;
+    logic [1:0] alu_op;
 
     assign mem_read = 1;
     assign pc_wen = (alu_zero & branch) | pc_update;
@@ -82,9 +81,9 @@ module NextController (
             end
             MEM_ADDR: begin
                 case(opcode)
+                    OP_LW: next_state = MEM_READ;
                     OP_SW: next_state = MEM_WRITE;
-                    default: next_state = MEM_READ;
-                endcase
+                endcase 
             end
             MEM_READ: next_state = MEM_WB;
             EXEC_J, EXEC_I, EXEC_R: next_state = ALU_WB; 
@@ -93,7 +92,6 @@ module NextController (
     end
 
     always_comb begin
-        // imm_sel = 0;
         mem_write = 0;
         addr_src = 0;
         instr_flop_wen = 0;
@@ -134,6 +132,7 @@ module NextController (
             EXEC_R: begin
                 alu_a_src = 2;
                 alu_b_src = 0;
+                alu_op = 2;
             end
             ALU_WB: begin
                 reg_write = 1;
@@ -141,11 +140,13 @@ module NextController (
             EXEC_I: begin
                 alu_a_src = 2;
                 alu_b_src = 1;
+                alu_op = 2;
             end
             EXEC_B: begin
                 branch = 1;
                 alu_a_src = 2;
                 alu_b_src = 0;
+                alu_op = 3;
             end
             EXEC_J: begin
                 pc_update = 1; 

@@ -13,7 +13,6 @@ module Controller (
     output logic [1:0] result_src
 );
     logic [1:0] alu_op;
-    logic [5:0] control_instr;
     logic [11: 0] alu_instr;
 
     // We always want this enabled

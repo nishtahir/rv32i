@@ -17,7 +17,6 @@ module NextControllerTest;
     logic [6:0] funct7;
     logic instr_flop_wen;
     logic pc_wen;
-    logic waddr_src;
     logic addr_src;
     logic mem_write;
     logic mem_read;
@@ -37,7 +36,6 @@ module NextControllerTest;
         .funct7(funct7),
         .instr_flop_wen(instr_flop_wen),
         .pc_wen(pc_wen),
-        .waddr_src(waddr_src),
         .addr_src(addr_src),
         .mem_write(mem_write),
         .mem_read(mem_read),
