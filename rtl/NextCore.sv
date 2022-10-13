@@ -1,11 +1,14 @@
 module NextCore (
     input logic clk,
     input logic rst,
-    // Debug signals
-    output logic [31:0] instr
+    input logic [7:0] io_addr,
+    output logic [31:0] io_data,
+    output logic [31:0] io_uart_io_reg,
+    output logic [31:0] io_uart_csr_reg,
+    output logic [31:0] io_gpio_io_reg
 );
-
     logic reg_write;
+    logic [31:0] instr;
     logic [31:0] pc;
     logic [4:0] reg_raddr1;
     logic [4:0] reg_raddr2;
@@ -58,6 +61,8 @@ module NextCore (
     assign mem_wdata = rd2;
 
     NextController controller(
+        .clk(clk),
+        .rst(rst),
         .alu_zero(alu_zero),
         .opcode(instr[6:0]),
         .funct3(instr[14:12]),
@@ -91,7 +96,12 @@ module NextCore (
         .waddr(mem_addr[15:0]),
         .raddr(mem_addr[15:0]),
         .wdata(mem_wdata),
-        .rdata(mem_rdata)
+        .rdata(mem_rdata),
+        .io_addr(io_addr),
+        .io_data(io_data),
+        .io_uart_io_reg(io_uart_io_reg),
+        .io_uart_csr_reg(io_uart_csr_reg),
+        .io_gpio_io_reg(io_gpio_io_reg)
     );
 
     Flopenr instr_flop (

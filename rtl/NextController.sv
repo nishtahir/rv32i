@@ -30,7 +30,7 @@ module NextController (
     logic pc_update;
     logic branch;
 
-
+    assign mem_read = 1;
     assign pc_wen = (alu_zero & branch) | pc_update;
 
     AluDecoder alu_decoder(

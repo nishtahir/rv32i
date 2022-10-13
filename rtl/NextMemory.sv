@@ -6,7 +6,12 @@ module NextMemory (
     input logic [15:0] waddr,
     input logic [15:0] raddr,
     input logic [31:0] wdata,
-    output logic [31:0] rdata
+    input logic [7:0] io_addr,    
+    output logic [31:0] rdata,
+    output logic [31:0] io_data,
+    output logic [31:0] io_uart_io_reg,
+    output logic [31:0] io_uart_csr_reg,
+    output logic [31:0] io_gpio_io_reg
 );
 
     // Calculate the number of bits required for the address
@@ -15,11 +20,16 @@ module NextMemory (
 
     logic [MEM_WIDTH - 1:0]  mem [0:MEM_DEPTH - 1];
 
+    assign io_data = mem[io_addr];
+
+    // initial begin
+    //     // Zero out RAM
+    //     for (integer i = 0; i < MEM_DEPTH; i = i + 1) begin
+    //         mem[i] = 0;
+    //     end
+    // end
     initial begin
-        // Zero out RAM
-        for (integer i = 0; i < MEM_DEPTH; i = i + 1) begin
-            mem[i] = 0;
-        end
+        $readmemh("../nextrom.mem", mem, 0, MEM_DEPTH - 1);
     end
 
     // Interact with the memory block
