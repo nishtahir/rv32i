@@ -151,6 +151,7 @@ module NextControllerTest;
         _assert(result_src === 0, "result_src != 0");
         _assert(reg_write === 1, "reg_write != 1");
         
+        #2
         // B type Immediate
         opcode = 7'b1100011; 
         alu_zero = 1;
@@ -165,7 +166,23 @@ module NextControllerTest;
         _assert(alu_b_src === 0, "alu_b_src != immgen");
         _assert(result_src === 0, "result_src != 0");
         _assert(pc_wen === 1, "pc_wen");
-                
+
+        #2
+        // J type Immediate
+        opcode = 7'b1101111; 
+        alu_zero = 1;
+        _assert(uut.state === 0, "uut.state != FETCH");
+
+        #2
+        _assert(uut.state === 1, "uut.state != DECODE");
+
+        #2
+        _assert(uut.state === 10, "uut.state != EXEC_J");
+        _assert(alu_a_src === 1, "alu_a_src != rd1");
+        _assert(alu_b_src === 2, "alu_b_src != immgen");
+        _assert(result_src === 0, "result_src != 0");
+        _assert(pc_wen === 1, "pc_wen");
+   
         #10
         $finish;
     end
