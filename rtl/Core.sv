@@ -56,7 +56,7 @@ module Core (
         .MEM_DEPTH(64)
     ) imem (
         // We're assuming that the last 2 bits of the pc will always be 0
-        // since they are assumed to be multiples ol 4
+        // since they are assumed to be multiples of 4
         // This should be 6 bits wide since the memory depth is 2^6 = 64
         // https://arstechnica.com/civis/viewtopic.php?t=801655
         .addr(pc[7:2]),

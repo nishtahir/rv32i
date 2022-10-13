@@ -35,13 +35,17 @@ module NextMemory (
     // Interact with the memory block
     always @(posedge clk) begin
         if (wen) begin
-            mem[waddr] = wdata;
+            // We're assuming that access will always be
+            // byte aligned
+            mem[waddr[15:2]] = wdata;
         end
     end
 
     always_comb begin
         if (ren) begin
-            rdata = mem[raddr];
+            // We're assuming that access will always be
+            // byte aligned
+            rdata = mem[raddr[15:2]];
         end 
         else begin
             rdata = 0;

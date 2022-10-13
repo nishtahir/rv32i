@@ -30,8 +30,6 @@ module NextCoreTest;
         $dumpfile("../build/NextCoreTest.vcd");
         $dumpvars(0, NextCoreTest);
 
-
- 
         // #2 
         // _assert(reg_waddr === 5'h01, "addi x1 , x0, 1000");
         // _assert(reg_wdata === 32'h000003E8, "addi x1 , x0,   1000");
@@ -200,7 +198,7 @@ module NextCoreTest;
         // _assert(reg_waddr === 5'h16, "lui x22, 524289");
         // _assert(reg_wdata === 32'h80001000, "lui x22, 524289");
 
-        #10
+        #20
         $finish;
     end
 
