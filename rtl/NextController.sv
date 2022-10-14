@@ -20,14 +20,15 @@ module NextController (
 
     localparam OP_LW = 7'b0000011;
     localparam OP_SW = 7'b0100011;
-    localparam OP_R = 7'b0110011;
-    localparam OP_I = 7'b0010011;
-    localparam OP_B = 7'b1100011;
-    localparam OP_J = 7'b1101111;
+    localparam OP_R  = 7'b0110011;
+    localparam OP_I  = 7'b0010011;
+    localparam OP_B  = 7'b1100011;
+    localparam OP_J  = 7'b1101111;
+    localparam OP_JR = 7'b1100111;
     
     logic pc_update;
     logic branch;
-    logic [1:0] alu_op;
+    logic [2:0] alu_op;
 
     assign mem_read = 1;
     assign pc_wen = (alu_zero & branch) | pc_update;
@@ -56,7 +57,8 @@ module NextController (
         ALU_WB = 7,
         EXEC_I = 8,
         EXEC_B = 9,
-        EXEC_J = 10
+        EXEC_J = 10,
+        EXEC_JR = 11
     } state, next_state;
 
     always_ff @(posedge clk, posedge rst) begin
@@ -83,10 +85,12 @@ module NextController (
                 case(opcode)
                     OP_LW: next_state = MEM_READ;
                     OP_SW: next_state = MEM_WRITE;
+                    OP_JR: next_state = EXEC_JR;
+                    default: next_state = MEM_READ;
                 endcase 
             end
             MEM_READ: next_state = MEM_WB;
-            EXEC_J, EXEC_I, EXEC_R: next_state = ALU_WB; 
+            EXEC_J, EXEC_JR, EXEC_I, EXEC_R: next_state = ALU_WB; 
             EXEC_B, ALU_WB, MEM_WB, MEM_WRITE: next_state = FETCH;
         endcase
     end
@@ -112,7 +116,8 @@ module NextController (
                 result_src = 2;
             end
             DECODE: begin
-                // No-op
+                alu_a_src = 1;
+                alu_b_src = 1;
             end
             MEM_ADDR: begin
                 alu_a_src = 2;
@@ -152,6 +157,12 @@ module NextController (
                 pc_update = 1; 
                 alu_a_src = 1;
                 alu_b_src = 2;
+            end
+            EXEC_JR: begin
+                pc_update = 1; 
+                alu_a_src = 3;
+                alu_b_src = 3;
+                alu_op = 4;
             end
         endcase
     end

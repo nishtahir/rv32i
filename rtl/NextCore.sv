@@ -185,19 +185,21 @@ module NextCore (
         .funct3(funct3)
     );
 
-    Mux3 alu_a_mux (
+    Mux4 alu_a_mux (
         .select(alu_a_src),
         .d00(pc), 
         .d01(old_pc), 
         .d10(rd1),
+        .d11(alu_out),
         .q(alu_a)
     );
 
-    Mux3 alu_b_mux (
+    Mux4 alu_b_mux (
         .select(alu_b_src),
         .d00(rd2), 
         .d01(imm_ext), 
         .d10(4),
+        .d11(~(32'h00000001)),
         .q(alu_b)
     );
 
