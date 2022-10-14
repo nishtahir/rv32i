@@ -30,7 +30,7 @@ module NextCoreTest;
         $dumpfile("../build/NextCoreTest.vcd");
         $dumpvars(0, NextCoreTest);
 
-        #250
+        #300
         $finish;
     end
 

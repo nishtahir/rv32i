@@ -110,6 +110,7 @@ make
 * [RISC-V ISA base and extensions](https://en.wikipedia.org/wiki/RISC-V#ISA_base_and_extensions)
 * [UART Design and Programming](https://babbage.cs.qc.cuny.edu/courses/cs343/2003_02/UART.html)
 * [The -march, -mabi, and -mtune arguments to RISC-V Compilers](https://www.sifive.com/blog/all-aboard-part-1-compiler-args)
+* [RISC-V Instruction Set Specifications](https://msyksphinz-self.github.io/riscv-isadoc/html/index.html)
 
 # License
 ```

@@ -48,6 +48,7 @@ module NextCore (
 
     logic [31:0] rdata;
     logic [31:0] rdata_ext;
+    logic [31:0] wdata_ext;
     logic [31:0] result_out;
     logic [31:0] rd1;
     logic [31:0] rd2;
@@ -61,7 +62,7 @@ module NextCore (
     assign reg_waddr = instr[11:7];
     assign reg_wdata = result_out;
     assign pc_next = result_out;
-    assign mem_wdata = rd2;
+    assign mem_wdata = wdata_ext;
 
     assign opcode = instr[6:0];
     assign funct3 = instr[14:12];
@@ -176,6 +177,12 @@ module NextCore (
         .in(rdata),
         .funct3(funct3),
         .out(rdata_ext)
+    );
+
+    RegisterTruncater rd_trunc(
+        .in(rd2),
+        .out(wdata_ext),
+        .funct3(funct3)
     );
 
     Mux3 alu_a_mux (
