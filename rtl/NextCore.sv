@@ -218,7 +218,8 @@ module NextCore (
         .q(mem_addr)
     );
 
-    Flopr pc_flop (
+    Flopenr pc_flop (
+        .en(instr_flop_wen),
         .clk(clk), 
         .rst(rst), 
         .in(pc),
