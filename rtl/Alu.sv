@@ -9,16 +9,16 @@ module Alu (
     output logic [31: 0] out
 );
 
-    localparam ADD  = 4'b0000;
-    localparam SUB  = 4'b0001;
-    localparam AND  = 4'b0010;
-    localparam OR   = 4'b0011;
-    localparam SLT  = 4'b0100;
-    localparam XOR  = 4'b0101;
-    localparam SLTU = 4'b0110;
-    localparam SLL  = 4'b0111;
-    localparam SRL  = 4'b1000;
-    localparam SRA  = 4'b1001;
+    localparam ADD  = 0;
+    localparam SUB  = 1;
+    localparam AND  = 2;
+    localparam OR   = 3;
+    localparam SLT  = 4;
+    localparam XOR  = 5;
+    localparam SLTU = 6;
+    localparam SLL  = 7;
+    localparam SRL  = 8;
+    localparam SRA  = 9;
 
     always_comb begin
         carry = 0;
@@ -49,7 +49,7 @@ module Alu (
         endcase
     end
 
-    assign zero = out == 0;
-    assign neg = out[31];
+    assign zero = out === 0;
+    assign neg = ~out[31];
     
 endmodule

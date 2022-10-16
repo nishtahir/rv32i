@@ -25,13 +25,14 @@ module NextController (
     localparam OP_B  = 7'b1100011;
     localparam OP_J  = 7'b1101111;
     localparam OP_JR = 7'b1100111;
+    localparam OP_LUI = 7'b0110111;
     
     logic pc_update;
     logic branch;
     logic [2:0] alu_op;
 
     assign mem_read = 1;
-    assign pc_wen = (alu_zero & branch) | pc_update;
+    assign pc_wen =  branch | pc_update;
 
     AluDecoder alu_decoder(
         .funct3(funct3),
@@ -58,7 +59,8 @@ module NextController (
         EXEC_I = 8,
         EXEC_B = 9,
         EXEC_J = 10,
-        EXEC_JR = 11
+        EXEC_JR = 11,
+        IMM_WB = 12
     } state, next_state;
 
     always_ff @(posedge clk, posedge rst) begin
@@ -83,15 +85,16 @@ module NextController (
             end
             MEM_ADDR: begin
                 case(opcode)
-                    OP_LW: next_state = MEM_READ;
-                    OP_SW: next_state = MEM_WRITE;
-                    OP_JR: next_state = EXEC_JR;
+                    OP_LW:  next_state = MEM_READ;
+                    OP_SW:  next_state = MEM_WRITE;
+                    OP_JR:  next_state = EXEC_JR;
+                    OP_LUI: next_state = IMM_WB;
                     default: next_state = MEM_READ;
                 endcase 
             end
             MEM_READ: next_state = MEM_WB;
             EXEC_J, EXEC_JR, EXEC_I, EXEC_R: next_state = ALU_WB; 
-            EXEC_B, ALU_WB, MEM_WB, MEM_WRITE: next_state = FETCH;
+            IMM_WB, EXEC_B, ALU_WB, MEM_WB, MEM_WRITE: next_state = FETCH;
         endcase
     end
 
@@ -148,10 +151,27 @@ module NextController (
                 alu_op = 2;
             end
             EXEC_B: begin
-                branch = 1;
                 alu_a_src = 2;
                 alu_b_src = 0;
                 alu_op = 3;
+                // There's probably a better way to do this,
+                // but I've been at this too long, it works and I'm tired...
+                casez (funct3)
+                    3'b000: begin                   // beq
+                        branch = alu_zero ? 1 : 0;
+                    end
+                    3'b001: begin                   // bne
+                        branch = alu_zero ? 0 : 1;
+                    end
+                    3'b110,                         // bleu
+                    3'b100: begin                   // ble
+                        branch = alu_zero ? 0 : 1; 
+                    end
+                    3'b111,                         // bgeu
+                    3'b101: begin                   // bge
+                        branch = alu_zero ? 1 : 0;
+                    end
+                endcase
             end
             EXEC_J: begin
                 pc_update = 1; 
@@ -163,6 +183,10 @@ module NextController (
                 alu_a_src = 3;
                 alu_b_src = 3;
                 alu_op = 4;
+            end
+            IMM_WB: begin
+                reg_write = 1;
+                result_src = 3;
             end
         endcase
     end

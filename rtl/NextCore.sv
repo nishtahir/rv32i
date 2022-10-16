@@ -203,11 +203,12 @@ module NextCore (
         .q(alu_b)
     );
 
-    Mux3 alu_result_mux (
+    Mux4 alu_result_mux (
         .select(result_src),
         .d00(alu_out), 
         .d01(rdata_ext), 
         .d10(alu_result),
+        .d11(imm_ext),
         .q(result_out)
     );
 

@@ -23,6 +23,7 @@ module AluDecoder (
             13'b010_101_00?????: alu_control = 8; // srl
             13'b010_101_01?????: alu_control = 9; // sra
 
+            // Branches
             13'b011_000_???????: alu_control = 5; // xor
             13'b011_001_???????: alu_control = 5; // xor
             13'b011_100_???????: alu_control = 4; // slt
