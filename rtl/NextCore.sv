@@ -7,6 +7,7 @@ module NextCore (
     output logic [31:0] io_uart_csr_reg,
     output logic [31:0] io_gpio_io_reg
 );
+
     logic reg_write;
     logic [31:0] instr;
     logic [31:0] pc;
@@ -104,12 +105,7 @@ module NextCore (
         .waddr(mem_addr[17:2]),
         .raddr(mem_addr[17:2]),
         .wdata(mem_wdata),
-        .rdata(mem_rdata),
-        .io_addr(io_addr),
-        .io_data(io_data),
-        .io_uart_io_reg(io_uart_io_reg),
-        .io_uart_csr_reg(io_uart_csr_reg),
-        .io_gpio_io_reg(io_gpio_io_reg)
+        .rdata(mem_rdata)
     );
 
     Flopenr instr_flop (
@@ -227,4 +223,6 @@ module NextCore (
         .out(old_pc)
     );
     
+    assign io_gpio_io_reg = instr;
+
 endmodule

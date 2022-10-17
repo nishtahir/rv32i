@@ -74,7 +74,7 @@ module Top (
         .uart_rx(uart_rx)
     );
 
-    Core riscv(
+    NextCore riscv(
         .clk(sys_clk),
         .rst(rst),
         .io_uart_io_reg(io_uart_io_reg),
