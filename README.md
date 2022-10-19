@@ -112,6 +112,11 @@ make
 * [The -march, -mabi, and -mtune arguments to RISC-V Compilers](https://www.sifive.com/blog/all-aboard-part-1-compiler-args)
 * [RISC-V Instruction Set Specifications](https://msyksphinz-self.github.io/riscv-isadoc/html/index.html)
 
+# FAQ
+
+* Why are components prefixed with `Next*`? - This is my second iteration of the core. Components that were rewritten were prefixed with Next. 
+I liked the naming scheme and decided to keep it. 
+
 # License
 ```
 Copyright 2022 Nish Tahir

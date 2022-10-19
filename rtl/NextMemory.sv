@@ -1,4 +1,3 @@
-// Combined instruction and Data Memory
 module NextMemory (
     input logic clk,
     input logic wen,
@@ -7,28 +6,54 @@ module NextMemory (
     input logic [15:0] raddr,
     input logic [31:0] wdata,
     output logic [31:0] rdata,
-);
-    // Calculate the number of bits required for the address
-    localparam MEM_WIDTH = 32;
-    `ifdef SIMULATION
-    localparam MEM_DEPTH = 64;
-    `else
-    localparam MEM_DEPTH = 2048;
-    `endif
+    output logic [31:0] io_gpio_io_reg,
+    output logic [31:0] io_uart_io_reg,
+    output logic [31:0] io_uart_csr_reg
+); 
 
-    logic [MEM_WIDTH - 1:0]  mem [0:MEM_DEPTH - 1];
+    logic [1:0] wen_src;
+    logic [1:0] ren_src;
+    logic [1:0] out_src;
+    logic [31:0] ram_out;
+    logic [31:0] io_out;
 
-    initial begin
-        $readmemh("../nextrom.mem", mem, 0, MEM_DEPTH - 1);
+    NextAddressDecoder decoder(
+        .wen(wen),
+        .ren(ren),
+        .addr(waddr),
+        .wen_src(wen_src),
+        .ren_src(ren_src),
+        .out_src(out_src)
+    );
+
+    NextRam ram (
+        .clk(clk),
+        .wen((wen_src === 0) & wen),
+        .ren((ren_src === 0) & ren),
+        .waddr(waddr),
+        .raddr(raddr),
+        .wdata(wdata),
+        .rdata(ram_out)
+    );
+
+    NextIO io (
+        .clk(clk),
+        .wen((wen_src === 1) & wen),
+        .ren((ren_src === 1) & ren),
+        .waddr(waddr),
+        .raddr(raddr),
+        .wdata(wdata),
+        .rdata(io_out),
+        .io_gpio_io_reg(io_gpio_io_reg),
+        .io_uart_io_reg(io_uart_io_reg),
+        .io_uart_csr_reg(io_uart_csr_reg)
+    );
+
+    always_comb begin
+        case (out_src)
+            1: rdata = io_out;
+            default: rdata = ram_out;
+        endcase    
     end
 
-    always @(posedge clk) begin
-        if (wen) begin
-            mem[waddr] <= wdata;
-        end
-        if (ren) begin
-            rdata <= mem[raddr];
-        end
-    end
-    
 endmodule
