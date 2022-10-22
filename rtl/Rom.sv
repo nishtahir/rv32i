@@ -10,7 +10,7 @@ module Rom #(
     logic [MEM_WIDTH - 1: 0] mem [MEM_DEPTH - 1 : 0];
 
     initial begin
-        $readmemh("../rom.mem", mem, 0, MEM_DEPTH - 1);
+        $readmemh("../testrom.mem", mem, 0, MEM_DEPTH - 1);
     end
 
     always_comb begin

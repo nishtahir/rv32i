@@ -21,11 +21,14 @@ module NextRam (
     end
 
     always @(posedge clk) begin
-        if (wen) begin
-            mem[waddr] <= wdata;
-        end
         if (ren) begin
             rdata <= mem[raddr];
+        end
+    end
+
+    always @(negedge clk) begin
+        if (wen) begin
+            mem[waddr] <= wdata;
         end
     end
     

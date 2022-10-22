@@ -19,15 +19,16 @@ initial begin
 end
 
 
-always_ff @(posedge clk) begin
-    if(we) begin
-        mem[waddr] = wdata;
+always @(posedge clk) begin
+    if(we & waddr !== 0) begin
+        mem[waddr] <= wdata;
     end
-    // hardwire x0 to 0
-    mem[0] = 0;
 end
 
-assign rd1 = mem[raddr1];
-assign rd2 = mem[raddr2];
+always @(negedge clk) begin
+    rd1 <= mem[raddr1];
+    rd2 <= mem[raddr2];
+end
+
 
 endmodule
