@@ -18,14 +18,15 @@ module NextController (
     output logic [1:0] alu_b_src
 );
 
-    localparam OP_LW = 7'b0000011;
-    localparam OP_SW = 7'b0100011;
-    localparam OP_R  = 7'b0110011;
-    localparam OP_I  = 7'b0010011;
-    localparam OP_B  = 7'b1100011;
-    localparam OP_J  = 7'b1101111;
-    localparam OP_JR = 7'b1100111;
-    localparam OP_LUI = 7'b0110111;
+    localparam OP_LW    = 7'b0000011;
+    localparam OP_SW    = 7'b0100011;
+    localparam OP_R     = 7'b0110011;
+    localparam OP_I     = 7'b0010011;
+    localparam OP_B     = 7'b1100011;
+    localparam OP_J     = 7'b1101111;
+    localparam OP_JR    = 7'b1100111;
+    localparam OP_LUI   = 7'b0110111;
+    localparam OP_AUIPC = 7'b0010111;
     
     logic pc_update;
     logic branch;
@@ -60,7 +61,8 @@ module NextController (
         EXEC_B = 9,
         EXEC_J = 10,
         EXEC_JR = 11,
-        IMM_WB = 12
+        IMM_WB = 12,
+        EXEC_AUIPC = 13
     } state, next_state;
 
     always_ff @(posedge clk, posedge rst) begin
@@ -80,6 +82,7 @@ module NextController (
                     OP_I: next_state = EXEC_I;
                     OP_B: next_state = EXEC_B;
                     OP_J: next_state = EXEC_J;
+                    OP_AUIPC: next_state = EXEC_AUIPC;
                     default: next_state = MEM_ADDR;
                 endcase
             end
@@ -93,7 +96,7 @@ module NextController (
                 endcase 
             end
             MEM_READ: next_state = MEM_WB;
-            EXEC_J, EXEC_JR, EXEC_I, EXEC_R: next_state = ALU_WB; 
+            EXEC_AUIPC, EXEC_J, EXEC_JR, EXEC_I, EXEC_R: next_state = ALU_WB; 
             IMM_WB, EXEC_B, ALU_WB, MEM_WB, MEM_WRITE: next_state = FETCH;
         endcase
     end
@@ -187,6 +190,10 @@ module NextController (
             IMM_WB: begin
                 reg_write = 1;
                 result_src = 3;
+            end
+            EXEC_AUIPC: begin
+                alu_a_src = 1;
+                alu_b_src = 1;
             end
         endcase
     end

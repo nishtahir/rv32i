@@ -20,10 +20,11 @@ end
 
 
 always_ff @(posedge clk) begin
-    // TODO hardwire mem[0] to 0
     if(we) begin
         mem[waddr] = wdata;
     end
+    // hardwire x0 to 0
+    mem[0] = 0;
 end
 
 assign rd1 = mem[raddr1];

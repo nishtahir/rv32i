@@ -32,12 +32,18 @@ module NextMemoryTest;
         $dumpvars(0, NextMemoryTest);
 
         #2
-
-        #2
         waddr = 15'h0200;
         raddr = 15'h0200;
         wen = 1;
         wdata = 99;
+
+        #2
+        waddr = 15'h0000;
+        raddr = 15'h0000;
+        wen = 0;
+        wdata = 0;
+
+        #2
 
         #20 $finish;
     end

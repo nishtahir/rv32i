@@ -30,6 +30,11 @@ module NextCoreTest;
         $dumpfile("../build/NextCoreTest.vcd");
         $dumpvars(0, NextCoreTest);
 
+        #2
+        rst = 1;
+        #1
+        rst = 0;
+
         #320
         $finish;
     end

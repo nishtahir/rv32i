@@ -87,22 +87,4 @@ module Top (
     assign LED_G = ~io_gpio_io_reg[1];
     assign LED_B = ~io_gpio_io_reg[2];
 
-    // assign P2_1 = 0;
-    // assign P2_2 = 1;
-    // assign P2_12 = 1;
-
-    // SpiMaster #(
-    //     .CLK_DIV(4)
-    // ) spi (
-    //     .clk(global_clk),
-    //     .rst(rst),
-    //     .miso(spi_miso),
-    //     .mosi(spi_mosi),
-    //     .sck(spi_sck),
-    //     .start(spi_send),
-    //     .data_in(spi_din),
-    //     .data_out(spi_dout),
-    //     .busy(spi_busy)
-    // );
-    
 endmodule

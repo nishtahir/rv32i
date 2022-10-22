@@ -1,6 +1,12 @@
 # RV32I
 An RV32I core implementation
 
+## Requirements
+
+* [Icicle](https://github.com/nishtahir/icicle)
+* [Docker](https://www.docker.com/)
+* (Optional) [VSCode](https://code.visualstudio.com/)
+
 # Directories
 
 * `rtl` - HDL sources and RTL level code required to implement the design
@@ -9,6 +15,8 @@ An RV32I core implementation
 * `board` - Board supporting configuration files, including constraints and build parameters
 
 # Usage
+
+## RTL
 
 The toolchain can be installed and activated using [`icicle`](https://github.com/nishtahir/icicle).
 
@@ -46,10 +54,33 @@ You can add and remove your own board configurations in the `board` folder by ad
 make 
 ```
 
+## SDK
+
+SDK sources are compiled using the RISC-V GCC. A handy `Dockerfile` is provided in the `sdk` folder and can be used to build an image with the required tooling.
+
+```
+$ cd sdk
+$ docker build -t rvgcc .
+```
+
+This will build and tag the image as `rvgcc`. You can create a container and access the shell using
+
+```
+docker run -it --entrypoint=/bin/bash rvgcc
+```
+
+To mount the project to a directory within the container you can use `-v`. 
+
+```
+docker run -it -v $PWD:/sdk --entrypoint=/bin/bash rvgcc
+```
+
+
+
 # Supported Instructions
 
 - [x] lui 
-- [ ] auipc 
+- [x] auipc 
 - [x] addi 
 - [x] slti 
 - [x] sltiu 

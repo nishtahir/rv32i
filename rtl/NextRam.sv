@@ -8,16 +8,16 @@ module NextRam (
     output logic [31:0] rdata
 );
     localparam MEM_WIDTH = 32;
-    `ifdef SIMULATION
-    localparam MEM_DEPTH = 64;
-    `else
     localparam MEM_DEPTH = 2048;
-    `endif
 
     logic [MEM_WIDTH - 1:0]  mem [0:MEM_DEPTH - 1];
 
     initial begin
+        `ifdef SIMULATION
+        $readmemh("../testrom.mem", mem, 0, MEM_DEPTH - 1);
+        `else
         $readmemh("../nextrom.mem", mem, 0, MEM_DEPTH - 1);
+        `endif
     end
 
     always @(posedge clk) begin
