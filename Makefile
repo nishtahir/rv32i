@@ -1,4 +1,4 @@
-BOARD ?= icesugar
+BOARD ?= alchitry_cu
 
 default: all
 

@@ -23,9 +23,6 @@ module NextIO (
         if (wen) begin
             mem[waddr[4:0]] <= wdata;
         end
-    end
-
-    always @(negedge clk) begin
         if (ren) begin
             rdata <= mem[raddr[4:0]];
         end

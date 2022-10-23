@@ -48,7 +48,7 @@ module NextController (
     );
 
     // https://www.intel.com/content/www/us/en/docs/programmable/683082/22-1/systemverilog-state-machine-coding-example.html
-    enum int unsigned { 
+    typedef enum int unsigned { 
         FETCH = 0, 
         DECODE = 1, 
         MEM_ADDR = 2, 
@@ -62,12 +62,18 @@ module NextController (
         EXEC_J = 10,
         EXEC_JR = 11,
         IMM_WB = 12,
-        EXEC_AUIPC = 13
-    } state, next_state;
+        EXEC_AUIPC = 13,
+        START_UP = 14,
+        MEM_W_BUF = 15,
+        MEM_R_BUF = 16
+    } ControllerState;
+
+    ControllerState state = START_UP;
+    ControllerState next_state = FETCH;
 
     always_ff @(posedge clk, posedge rst) begin
 	    if(rst)
-		    state <= FETCH;
+		    state <= START_UP;
 	    else
 		    state <= next_state;
     end
@@ -95,9 +101,11 @@ module NextController (
                     default: next_state = MEM_READ;
                 endcase 
             end
-            MEM_READ: next_state = MEM_WB;
+            MEM_READ: next_state = MEM_R_BUF;
+            MEM_R_BUF: next_state = MEM_WB;
+            MEM_WRITE: next_state = MEM_W_BUF;
             EXEC_AUIPC, EXEC_J, EXEC_JR, EXEC_I, EXEC_R: next_state = ALU_WB; 
-            IMM_WB, EXEC_B, ALU_WB, MEM_WB, MEM_WRITE: next_state = FETCH;
+            START_UP, IMM_WB, EXEC_B, ALU_WB, MEM_WB, MEM_W_BUF: next_state = FETCH;
         endcase
     end
 
@@ -114,6 +122,9 @@ module NextController (
         pc_update = 0;
         
         unique case (state)
+            START_UP: begin
+                
+            end
             FETCH: begin
                 instr_flop_wen = 1;
                 alu_a_src = 0;
@@ -194,6 +205,12 @@ module NextController (
             EXEC_AUIPC: begin
                 alu_a_src = 1;
                 alu_b_src = 1;
+            end
+            MEM_W_BUF: begin
+                // No-op
+            end
+            MEM_R_BUF: begin
+                // No-op
             end
         endcase
     end

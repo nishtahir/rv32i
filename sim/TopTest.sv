@@ -2,6 +2,7 @@ module TopTest;
 
     logic clk = 0;
     always #1 clk = !clk;
+    logic rst = 1;
 
     logic [1:0] SW = 2'b11;
     logic LED_G;
@@ -12,12 +13,7 @@ module TopTest;
 
     Top uut(
         .clk(clk),
-        .uart_rx(uart_rx),
-        .SW(SW),
-        .uart_tx(uart_tx),
-        .LED_G(LED_G),
-        .LED_R(LED_R),
-        .LED_B(LED_B) 
+        .rst(rst)
     );
     
     initial begin
@@ -26,7 +22,7 @@ module TopTest;
 
 
 
-        #200 $finish;
+        #500 $finish;
     end
 
 endmodule

@@ -6,10 +6,12 @@ module NextProgramCounter(
     output logic [31: 0] pc = 0
 );
     
-    always_ff @(posedge clk) begin
-        if(rst)
+    always_ff @(posedge clk, posedge rst) begin
+        if(rst) begin
             pc <= 0;
-        else if (wen)
+        end
+        else if (wen) begin
             pc <= next;
+        end
     end
 endmodule

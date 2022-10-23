@@ -25,10 +25,7 @@ always @(posedge clk) begin
     end
 end
 
-always @(negedge clk) begin
-    rd1 <= mem[raddr1];
-    rd2 <= mem[raddr2];
-end
-
+assign rd1 = mem[raddr1];
+assign rd2 = mem[raddr2];
 
 endmodule

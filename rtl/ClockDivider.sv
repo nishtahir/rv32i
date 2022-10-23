@@ -3,12 +3,12 @@ module ClockDivider(
     input logic rst, 
     output logic out = 0
 );
-    always_ff @(posedge clk) begin
+    always @(posedge clk, posedge rst) begin
         if (rst) begin
-            out = 1'b0;
+            out <= 0;
         end
         else begin
-            out = ~out;	
+            out <= ~out;	
         end
     end
 endmodule
