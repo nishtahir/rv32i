@@ -45,7 +45,7 @@ $(PCF):
 	cat $(BOARD)/*.pcf > $(BUILD)/constraints.pcf
 
 $(NET): $(SV) $(MEM)
-	$(YOSYS) $(YOSYS_FLAGS) -p 'synth_ice40 -top $(TOP) -json $(NET)' $(RTL)/*.sv
+	$(YOSYS) $(YOSYS_FLAGS) -p 'synth_ice40 -top $(TOP) -json $(NET)' $(RTL)/*.sv $(BOARD)/*.sv
 
 $(ASC): $(NET) $(PCF)
 	$(PNR) $(PNR_FLAGS) --json $(NET)  --pcf $(PCF)  --asc $(ASC)

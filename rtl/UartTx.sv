@@ -6,7 +6,8 @@ module UartTx #(
   input logic rst,
   input logic send,
   input logic [7: 0] data,
-  output logic uart_tx
+  output logic uart_tx,
+  output logic sending
 );
 
   // Formula for baud counter is clk / baud
@@ -22,9 +23,9 @@ module UartTx #(
   logic load;
   logic clear;
 
-  typedef enum logic [1:0] {IDLE, SENDING} State;
-  State state;
-  State next_state;
+  typedef enum logic [1:0] {IDLE, SENDING} UartTx;
+  UartTx state = IDLE;
+  UartTx next_state;
 
   always @(posedge clk) begin
     if(rst) begin

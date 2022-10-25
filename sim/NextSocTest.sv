@@ -1,8 +1,8 @@
-module TopTest;
+module NextSocTest;
 
     logic clk = 0;
     always #1 clk = !clk;
-    logic rst = 1;
+    logic rst = 0;
 
     logic [1:0] SW = 2'b11;
     logic LED_G;
@@ -11,18 +11,18 @@ module TopTest;
     logic uart_rx;
     logic uart_tx;
 
-    Top uut(
+    NextSoc uut(
         .clk(clk),
-        .rst(rst)
+        .rst(rst),
+        .uart_tx(uart_tx),
+        .uart_rx(uart_rx)
     );
     
     initial begin
-        $dumpfile("../build/TopTest.vcd");
-        $dumpvars(0, TopTest);
+        $dumpfile("../build/NextSocTest.vcd");
+        $dumpvars(0, NextSocTest);
 
-
-
-        #500 $finish;
+        #1000 $finish;
     end
 
 endmodule

@@ -8,9 +8,9 @@ module UartRx #(
   output logic [7: 0] data
 );
 
-  typedef enum logic [1:0] {IDLE, RECEIVING} State;
-  State state;
-  State next_state;
+  typedef enum logic [1:0] {IDLE, RECEIVING} UartRxState;
+  UartRxState state;
+  UartRxState next_state;
 
   localparam DIV_SAMPLE = 4;
   localparam DIV_COUNTER = CLK_FREQUENCY_HZ /  (BAUD * DIV_SAMPLE);
