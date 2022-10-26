@@ -2,6 +2,10 @@ module NextCore (
     input logic clk,
     input logic rst,
     input logic [7:0] io_addr,
+    input logic io_uart_tx_busy,
+    input logic io_uart_rx_busy,
+    output logic io_uart_send,
+    output logic io_uart_read,
     output logic [31:0] io_data,
     output logic [31:0] io_uart_io_reg,
     output logic [31:0] io_uart_csr_reg,
@@ -108,7 +112,11 @@ module NextCore (
         .rdata(mem_rdata),
         .io_gpio_io_reg(io_gpio_io_reg),
         .io_uart_io_reg(io_uart_io_reg),
-        .io_uart_csr_reg(io_uart_csr_reg)
+        .io_uart_csr_reg(io_uart_csr_reg),
+        .io_uart_send(io_uart_send),
+        .io_uart_read(io_uart_read),
+        .io_uart_tx_busy(io_uart_tx_busy),
+        .io_uart_rx_busy(io_uart_rx_busy)
     );
 
     Flopenr instr_flop (

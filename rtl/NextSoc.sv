@@ -1,38 +1,30 @@
 module NextSoc (
-    input logic clk,
+    input logic sys_clk,
+    input logic uart_clk,
     input logic rst,
     input logic uart_rx,
     output logic uart_tx,
     output logic [7:0] gpio_a
 );
-    logic global_clk;
-    logic sys_clk;
-    logic uart_clk;
     logic [31:0] io_uart_io_reg;
     logic [31:0] io_uart_csr_reg;
     logic [31:0] io_gpio_io_reg;
-
-    UartClock uart_clk_gen(
-        .clock_in(clk),
-        .uart_clk(uart_clk),
-        .global_clk(global_clk)
-    );
-
-    ClockDivider sys_clk_gen(
-        .clk(clk),
-        .rst(rst),
-        .out(sys_clk)
-    );
+    logic io_uart_send;
+    logic io_uart_read;
+    logic io_uart_tx_busy;
+    logic io_uart_rx_busy;
 
     UartCore uart(
         .clk(uart_clk),
         .rst(rst),
-        .tx_send(1'b1),
-        .rx_read(1'b1),
+        .tx_send(io_uart_send),
+        .rx_read(io_uart_read),
         .uart_io_reg(io_uart_io_reg),
-        .uart_csr_reg(io_uart_csr_reg),
+        // .uart_csr_reg(io_uart_csr_reg),
         .uart_tx(uart_tx),
-        .uart_rx(uart_rx)
+        .uart_rx(uart_rx),
+        .tx_busy(io_uart_tx_busy),
+        .rx_busy(io_uart_rx_busy),
     );
 
     NextCore riscv(
@@ -40,9 +32,14 @@ module NextSoc (
         .rst(rst),
         .io_uart_io_reg(io_uart_io_reg),
         .io_uart_csr_reg(io_uart_csr_reg),
-        .io_gpio_io_reg(io_gpio_io_reg)
+        .io_gpio_io_reg(io_gpio_io_reg),
+        .io_uart_send(io_uart_send),
+        .io_uart_read(io_uart_read),
+        .io_uart_tx_busy(io_uart_tx_busy),
+        .io_uart_rx_busy(io_uart_rx_busy)
     );
 
-    assign gpio_a= io_gpio_io_reg[7:0];
-
+    // assign gpio_a= io_gpio_io_reg[7:0];
+    assign gpio_a= io_uart_csr_reg[7:0];
+    // assign gpio_a = clk;
 endmodule

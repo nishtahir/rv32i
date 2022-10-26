@@ -7,7 +7,8 @@ module UartCore (
     input logic rx_read,
     input logic uart_rx,
     input logic[31:0] uart_io_reg,
-    input logic[31:0] uart_csr_reg,
+    output logic tx_busy,
+    output logic rx_busy,
     output logic uart_tx
 );
 
@@ -15,6 +16,7 @@ module UartCore (
         .clk(clk),
         .rst(rst),
         .send(tx_send),
+        .busy(tx_busy),
         .data(uart_io_reg[7:0]),
         .uart_tx(uart_tx)
     );

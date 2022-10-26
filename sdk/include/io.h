@@ -10,7 +10,15 @@ typedef struct {
     volatile unsigned char RHR;
 } UART_IO_T;
 
-#define UART ((UART_IO_T *) REG_UART_IO)
+typedef struct {
+    volatile unsigned char TX_SEND : 1;
+    volatile unsigned char RX_READ : 1;
+    volatile unsigned char TX_BUSY : 1;
+    volatile unsigned char RX_BUSY : 1;
+} UART_CST_T;
+
+#define UART_IO ((UART_IO_T *) REG_UART_IO)
+#define UART_CSR ((UART_CST_T *) REG_UART_CSR)
 
 
 // typedef struct {

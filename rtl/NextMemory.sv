@@ -5,6 +5,10 @@ module NextMemory (
     input logic [15:0] waddr,
     input logic [15:0] raddr,
     input logic [31:0] wdata,
+    input logic io_uart_tx_busy,
+    input logic io_uart_rx_busy,
+    output logic io_uart_send,
+    output logic io_uart_read,
     output logic [31:0] rdata,
     output logic [31:0] io_gpio_io_reg,
     output logic [31:0] io_uart_io_reg,
@@ -46,7 +50,11 @@ module NextMemory (
         .rdata(io_out),
         .io_gpio_io_reg(io_gpio_io_reg),
         .io_uart_io_reg(io_uart_io_reg),
-        .io_uart_csr_reg(io_uart_csr_reg)
+        .io_uart_csr_reg(io_uart_csr_reg),
+        .io_uart_send(io_uart_send),
+        .io_uart_read(io_uart_read),
+        .io_uart_tx_busy(io_uart_tx_busy),
+        .io_uart_rx_busy(io_uart_rx_busy)
     );
 
     always_comb begin
