@@ -12,6 +12,8 @@ module UartCore (
     output logic uart_tx
 );
 
+    assign rx_busy = 0;
+
     UartTx tx(
         .clk(clk),
         .rst(rst),

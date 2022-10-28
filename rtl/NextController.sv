@@ -141,6 +141,8 @@ module NextController (
                 alu_b_src = 1;
             end
             MEM_READ: begin
+                alu_a_src = 2;
+                alu_b_src = 1;
                 addr_src = 1;
             end
             MEM_WB: begin
@@ -207,10 +209,9 @@ module NextController (
                 alu_b_src = 1;
             end
             MEM_W_BUF: begin
-                // No-op
             end
             MEM_R_BUF: begin
-                // No-op
+                addr_src = 1;
             end
         endcase
     end

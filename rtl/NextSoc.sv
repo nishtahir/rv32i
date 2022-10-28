@@ -20,11 +20,10 @@ module NextSoc (
         .tx_send(io_uart_send),
         .rx_read(io_uart_read),
         .uart_io_reg(io_uart_io_reg),
-        // .uart_csr_reg(io_uart_csr_reg),
         .uart_tx(uart_tx),
         .uart_rx(uart_rx),
         .tx_busy(io_uart_tx_busy),
-        .rx_busy(io_uart_rx_busy),
+        .rx_busy(io_uart_rx_busy)
     );
 
     NextCore riscv(

@@ -9,10 +9,10 @@ module NextIO (
     input logic io_uart_rx_busy,
     output logic io_uart_send,
     output logic io_uart_read,
-    output logic [31:0] rdata,
+    output logic [31:0] rdata = 0,
     output logic [31:0] io_gpio_io_reg,
     output logic [31:0] io_uart_io_reg,
-    output logic [31:0] io_uart_csr_reg,
+    output logic [31:0] io_uart_csr_reg
     
 );
     localparam MEM_WIDTH = 32;
@@ -34,19 +34,24 @@ module NextIO (
         end
     end
 
+    logic was_busy = 0;
+
     // [rx_busy, tx_busy, rx_read, tx_send]
     always @(posedge clk) begin
-        mem[2][2] <= io_uart_tx_busy;
-        mem[2][3] <= io_uart_rx_busy;
         if(io_uart_tx_busy === 1) begin
-            // If it's busy, reset the bit
-            mem[2][0] = 0;
+            was_busy = 1;
         end
 
-        if(io_uart_rx_busy === 1) begin
-            // Reset read bit
-            mem[2][1] = 0;
+        if(io_uart_tx_busy === 0 & was_busy) begin
+            // If we were busy but not anymore, reset the send bit
+            was_busy <= 0;
+            mem[2][0] <= 0;
         end
+
+        // if(io_uart_rx_busy === 1) begin
+        //     // Reset read bit
+        //     mem[2][1] = 0;
+        // end
     end
 
     assign io_gpio_io_reg = mem[0];

@@ -12,7 +12,8 @@ module NextSocTest;
     logic uart_tx;
 
     NextSoc uut(
-        .clk(clk),
+        .sys_clk(clk),
+        .uart_clk(clk),
         .rst(rst),
         .uart_tx(uart_tx),
         .uart_rx(uart_rx)

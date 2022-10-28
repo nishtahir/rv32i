@@ -1,6 +1,11 @@
 module UartTx #(
+  `ifdef SIMULATION
+  parameter CLK_FREQUENCY_HZ  = 20,
+  parameter BAUD = 2
+  `else
   parameter CLK_FREQUENCY_HZ  = 100_000_000,
   parameter BAUD = 9600
+  `endif
 ) (
   input logic clk,
   input logic rst,

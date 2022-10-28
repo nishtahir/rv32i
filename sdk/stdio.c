@@ -3,10 +3,33 @@
 
 int putchar(int c)
 {
-    while (UART_CSR -> TX_BUSY & 1)
+    if(c == '\0') {
+        return EOF;
+    }
+
+    while (UART_CSR->TX_SEND & 1)
     {
     }
-    UART_IO -> THR = c;
-    UART_CSR -> TX_SEND = 1;
-    return 0;
+    UART_IO->THR = c;
+    UART_CSR->TX_SEND = 1;
+    return c;
+}
+
+int puts(char *str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        putchar(str[i]);
+        i++;
+    }
+    return 1;
+    // if (str)
+    // {
+    //     while (*str)
+    //     {
+    //         putchar(*str++);
+    //     }
+    // }
+    // return 0;
 }

@@ -175,7 +175,7 @@ module NextCore (
 
     Flopr rdata_flop (
         .clk(clk), 
-        .rst(rst), 
+        .rst(rst),
         .in(mem_rdata),
         .out(rdata)
     );
