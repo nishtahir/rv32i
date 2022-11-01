@@ -65,7 +65,8 @@ module NextController (
         EXEC_AUIPC = 13,
         START_UP = 14,
         MEM_W_BUF = 15,
-        MEM_R_BUF = 16
+        MEM_R_BUF = 16,
+        BRANCH_W_BUF = 17
     } ControllerState;
 
     ControllerState state = START_UP;
@@ -104,8 +105,9 @@ module NextController (
             MEM_READ: next_state = MEM_R_BUF;
             MEM_R_BUF: next_state = MEM_WB;
             MEM_WRITE: next_state = MEM_W_BUF;
+            EXEC_B: next_state = BRANCH_W_BUF;
             EXEC_AUIPC, EXEC_J, EXEC_JR, EXEC_I, EXEC_R: next_state = ALU_WB; 
-            START_UP, IMM_WB, EXEC_B, ALU_WB, MEM_WB, MEM_W_BUF: next_state = FETCH;
+            BRANCH_W_BUF, START_UP, IMM_WB, ALU_WB, MEM_WB, MEM_W_BUF: next_state = FETCH;
         endcase
     end
 
@@ -212,6 +214,9 @@ module NextController (
             end
             MEM_R_BUF: begin
                 addr_src = 1;
+            end
+            BRANCH_W_BUF: begin
+                
             end
         endcase
     end

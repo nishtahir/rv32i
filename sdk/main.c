@@ -5,7 +5,7 @@ volatile unsigned int *gpio1 = (unsigned int*) 0x000804;
 volatile unsigned int *gpio2 = (unsigned int*) 0x000808;
 
 int main(void) {
-    puts("Hello World!\0");
+    puts("Hello World!");
     // putchar('h');
     // putchar('e');
     // putchar('l');
