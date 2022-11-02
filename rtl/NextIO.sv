@@ -21,7 +21,7 @@ module NextIO (
     logic [MEM_WIDTH - 1:0]  mem [0:MEM_DEPTH - 1];
 
     initial begin
-        $readmemh("../nextio.mem", mem, 0, MEM_DEPTH - 1);
+        $readmemh("../mem/nextio.mem", mem, 0, MEM_DEPTH - 1);
     end
 
     // Mem writes

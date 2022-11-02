@@ -14,9 +14,9 @@ module NextRam (
 
     initial begin
         `ifdef SIMULATION
-        $readmemh("../testrom.mem", mem, 0, MEM_DEPTH - 1);
+        $readmemh("../mem/testrom.mem", mem, 0, MEM_DEPTH - 1);
         `else
-        $readmemh("../nextrom.mem", mem, 0, MEM_DEPTH - 1);
+        $readmemh("../mem/nextrom.mem", mem, 0, MEM_DEPTH - 1);
         `endif
     end
 
