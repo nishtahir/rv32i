@@ -1,25 +1,14 @@
-#include<stdio.h>
+#include <stdio.h>
 
-volatile unsigned int *gpio = (unsigned int*) 0x000800;
-volatile unsigned int *gpio1 = (unsigned int*) 0x000804;
-volatile unsigned int *gpio2 = (unsigned int*) 0x000808;
-
-int main(void) {
-    puts("Hello World!");
-    // putchar('h');
-    // putchar('e');
-    // putchar('l');
-    // putchar('l');
-    // putchar('o');
-    // putchar(' ');
-    // putchar('w');
-    // putchar('o');
-    // putchar('r');
-    // putchar('l');
-    // putchar('d');
-    // putchar('!');
-
-    for(;;) {
-        
+int main(void)
+{
+    puts("Hello World!\n");
+    for (int i = 0; i < 10; i++)
+    {
+        putint(i);
+        puts("\n");
+    }
+    for (;;)
+    {
     }
 }

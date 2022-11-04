@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <io.h>
 
-int putchar(int c)
+int putchar(char c)
 {
     if(c == '\0') {
         return EOF;
@@ -15,6 +15,10 @@ int putchar(int c)
     return c;
 }
 
+int putint(int c) {
+    return putchar(c + 48);
+}
+
 int puts(char *str)
 {
     int i = 0;
@@ -24,12 +28,12 @@ int puts(char *str)
         i++;
     }
     return 1;
-    // if (str)
-    // {
-    //     while (*str)
-    //     {
-    //         putchar(*str++);
-    //     }
-    // }
-    // return 0;
+}
+
+int printf(const char* str, ...) {
+    char *vl = (char *) &str + sizeof str;
+
+	int i = 0, j=0;
+
+    return j;
 }

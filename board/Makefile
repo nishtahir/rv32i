@@ -1,6 +1,6 @@
-BUILD = ../build
-RTL = ../rtl
-ROOT = ../
+ROOT = ..
+BUILD = $(ROOT)/build
+RTL = $(ROOT)/rtl
 
 YOSYS ?= yosys
 YOSYS_FLAGS ?= -q
@@ -15,7 +15,7 @@ NET = $(BUILD)/out.json
 ASC = $(BUILD)/out.asc
 BIN = $(BUILD)/out.bin
 SV = $(RTL)/*.sv
-MEM = $(ROOT)*.mem
+MEM = $(ROOT)/mem/*.mem
 
 # Replace with your top module
 TOP = Top

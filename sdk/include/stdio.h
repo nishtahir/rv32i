@@ -5,7 +5,9 @@
     #define EOF (-1)
 #endif
 
-int putchar(int c);
+int putchar(char c);
+int putint(int c);
 int puts(char *str);
+int printf (const char * str, ...);
 
 #endif

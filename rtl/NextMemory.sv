@@ -5,6 +5,7 @@ module NextMemory (
     input logic [15:0] waddr,
     input logic [15:0] raddr,
     input logic [31:0] wdata,
+    input logic [1:0] ben,
     input logic io_uart_tx_busy,
     input logic io_uart_rx_busy,
     output logic io_uart_send,
@@ -60,7 +61,7 @@ module NextMemory (
     always_comb begin
         case (out_src)
             1: rdata = io_out;
-            default: rdata = ram_out;
+            default: rdata = ram_out >> (ben * 8);
         endcase    
     end
 

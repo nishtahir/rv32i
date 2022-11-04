@@ -108,6 +108,7 @@ module NextCore (
         // Assume memory access is byte aligned
         .waddr(mem_addr[17:2]),
         .raddr(mem_addr[17:2]),
+        .ben(mem_addr[1:0]),
         .wdata(mem_wdata),
         .rdata(mem_rdata),
         .io_gpio_io_reg(io_gpio_io_reg),
