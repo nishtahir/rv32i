@@ -39,10 +39,5 @@ module UartClock(
 			.PLLOUTGLOBALB(uart_clk)
 		);
 	`endif
-	
-
-
-
-
 
 endmodule

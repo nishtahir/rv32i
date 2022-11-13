@@ -3,5 +3,6 @@ build/
 schematics/
 **/*.o
 **/*.bin
+**/*.map
 **/node_modules/
 sdk/*.mem

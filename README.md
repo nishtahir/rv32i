@@ -13,6 +13,7 @@ An RV32I core implementation
 * `sdk` - Accompanying software/firmware
 * `sim` - Simulation sources used to validate the HDL sources
 * `board` - Board supporting configuration files, including constraints and build parameters
+* `mem` - Memory initialization files
 
 # Usage
 
@@ -142,6 +143,7 @@ docker run -it -v $PWD:/sdk --entrypoint=/bin/bash rvgcc
 * [UART Design and Programming](https://babbage.cs.qc.cuny.edu/courses/cs343/2003_02/UART.html)
 * [The -march, -mabi, and -mtune arguments to RISC-V Compilers](https://www.sifive.com/blog/all-aboard-part-1-compiler-args)
 * [RISC-V Instruction Set Specifications](https://msyksphinz-self.github.io/riscv-isadoc/html/index.html)
+* [RISC-V Compliance Test Suite](https://github.com/lowRISC/riscv-compliance)
 
 # FAQ
 

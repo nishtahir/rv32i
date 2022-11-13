@@ -28,6 +28,6 @@ SB_PLL40_CORE #(
 		.BYPASS(1'b0),
 		.REFERENCECLK(clock_in),
 		.PLLOUTCORE(clock_out)
-		);
+	);
 
 endmodule
