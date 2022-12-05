@@ -6,8 +6,8 @@
 #define REG_UART_CSR 0x808
 
 typedef struct {
-    volatile unsigned char THR;
-    volatile unsigned char RHR;
+    volatile unsigned char THR : 8;
+    volatile unsigned char RHR : 8;
 } UART_IO_T;
 
 typedef struct {
@@ -15,10 +15,10 @@ typedef struct {
     volatile unsigned char RX_READ : 1;
     volatile unsigned char TX_BUSY : 1;
     volatile unsigned char RX_BUSY : 1;
-} UART_CST_T;
+} UART_CSR_T;
 
 #define UART_IO ((UART_IO_T *) REG_UART_IO)
-#define UART_CSR ((UART_CST_T *) REG_UART_CSR)
+#define UART_CSR ((UART_CSR_T *) REG_UART_CSR)
 
 
 // typedef struct {

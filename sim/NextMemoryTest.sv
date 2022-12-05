@@ -4,11 +4,11 @@ module NextMemoryTest;
     logic clk = 1;
     always #1 clk = !clk;
 
+    // Test signals
+    logic [31:0] addr = 0;
+    
     logic wen = 0;
     logic ren = 1;
-    logic [15:0] waddr = 0;
-    logic [15:0] raddr = 0;
-    logic [2:0] ben = 0;
     logic [31:0] wdata = 0;
     logic [31:0] rdata;
     logic [31:0] io_gpio_io_reg;
@@ -19,9 +19,9 @@ module NextMemoryTest;
         .clk(clk),
         .wen(wen),
         .ren(ren),
-        .waddr(waddr),
-        .raddr(raddr),
-        .ben(ben),
+        .waddr(addr[15: 2]),
+        .raddr(addr[15: 2]),
+        .ben(addr[1:0]),
         .wdata(wdata),
         .rdata(rdata),
         .io_gpio_io_reg(io_gpio_io_reg),
@@ -34,9 +34,14 @@ module NextMemoryTest;
         $dumpvars(0, NextMemoryTest);
 
         #2
-        waddr = 15'h47;
-        raddr = 15'h47;
-        ben = 2'b10;
+        addr = 32'h11C;
+
+        #2
+        wdata = 32'h3E6;
+        wen = 1;
+
+
+        
         // wdata = 99;
 
         // #2

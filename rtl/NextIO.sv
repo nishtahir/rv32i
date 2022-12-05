@@ -5,6 +5,7 @@ module NextIO (
     input logic [15:0] waddr,
     input logic [15:0] raddr,
     input logic [31:0] wdata,
+    input logic [7:0] io_uart_io_rhr,
     input logic io_uart_tx_busy,
     input logic io_uart_rx_busy,
     output logic io_uart_send,
@@ -12,8 +13,8 @@ module NextIO (
     output logic [31:0] rdata = 0,
     output logic [31:0] io_gpio_io_reg,
     output logic [31:0] io_uart_io_reg,
-    output logic [31:0] io_uart_csr_reg
-    
+    output logic [31:0] io_uart_csr_reg,
+    output logic [7:0] io_uart_io_thr 
 );
     localparam MEM_WIDTH = 32;
     localparam MEM_DEPTH = 32;
@@ -30,7 +31,11 @@ module NextIO (
             mem[waddr[4:0]] <= wdata;
         end
         if (ren) begin
-            rdata <= mem[raddr[4:0]];
+            case(raddr[4:0])
+                // 5'b00001: rdata <= io_uart_io_reg;
+                default: rdata <= mem[raddr[4:0]];
+            endcase
+            
         end
     end
 
@@ -55,7 +60,8 @@ module NextIO (
     end
 
     assign io_gpio_io_reg = mem[0];
-    assign io_uart_io_reg = mem[1];
+    assign io_uart_io_thr = mem[1][7:0];
+    assign io_uart_io_reg = {16'b0, io_uart_io_rhr[7:0], mem[1][7:0]};
     assign io_uart_csr_reg = mem[2];
 
     assign io_uart_send = mem[2][0];

@@ -35,7 +35,7 @@ module NextCoreTest;
         #1
         rst = 0;
 
-        #320
+        #1000
         $finish;
     end
 

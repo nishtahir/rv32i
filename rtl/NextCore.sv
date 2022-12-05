@@ -4,12 +4,14 @@ module NextCore (
     input logic [7:0] io_addr,
     input logic io_uart_tx_busy,
     input logic io_uart_rx_busy,
+    input logic [7:0] io_uart_io_rhr,
     output logic io_uart_send,
     output logic io_uart_read,
     output logic [31:0] io_data,
     output logic [31:0] io_uart_io_reg,
     output logic [31:0] io_uart_csr_reg,
-    output logic [31:0] io_gpio_io_reg
+    output logic [31:0] io_gpio_io_reg,
+    output logic [7:0] io_uart_io_thr
 );
 
     logic reg_write;
@@ -113,6 +115,8 @@ module NextCore (
         .rdata(mem_rdata),
         .io_gpio_io_reg(io_gpio_io_reg),
         .io_uart_io_reg(io_uart_io_reg),
+        .io_uart_io_thr(io_uart_io_thr),
+        .io_uart_io_rhr(io_uart_io_rhr),
         .io_uart_csr_reg(io_uart_csr_reg),
         .io_uart_send(io_uart_send),
         .io_uart_read(io_uart_read),
